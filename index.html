@@ -32,7 +32,12 @@
   "employee": [
     {"@type": "Person", "name": "Paul Sanchez", "jobTitle": "Managing Broker / Founder"},
     {"@type": "Person", "name": "Claudia Sanchez", "jobTitle": "Director of Operations"},
-    {"@type": "Person", "name": "Edward Sanchez", "jobTitle": "Commercial Broker"}
+    {"@type": "Person", "name": "Edward Sanchez", "jobTitle": "Commercial Broker"},
+    {"@type": "Person", "name": "Basia Sawicka", "jobTitle": "Design Associate"},
+    {"@type": "Person", "name": "Isabela Sanchez", "jobTitle": "Marketing Associate"},
+    {"@type": "Person", "name": "Gabriela Bertand", "jobTitle": "Residential Broker"},
+    {"@type": "Person", "name": "Candice Bailey", "jobTitle": "Residential Broker"},
+    {"@type": "Person", "name": "Joseph Santoro", "jobTitle": "Broker Associate"}
   ]
 }
 </script>
@@ -193,6 +198,9 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 
 /* TEAM */
 .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;padding:5rem 0}
+.team-grid-agents{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;padding:0 0 5rem}
+.team-section-label{text-align:center;padding:2rem 0 0;margin-bottom:2rem;border-top:1px solid var(--t05)}
+.team-section-label h3{font-family:var(--serif);font-size:1.4rem;color:var(--cream);font-weight:400}
 .team-card{text-align:center}
 .team-photo{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,var(--bg2),var(--bg3));margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .team-photo::after{content:attr(data-label);font-size:.65rem;color:var(--t40);letter-spacing:.1em;text-align:center;padding:1rem}
@@ -202,7 +210,10 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 .team-contact-info{display:flex;flex-direction:column;gap:.3rem;align-items:center}
 .team-contact-info a{font-size:.78rem;color:var(--t40);transition:color .3s}
 .team-contact-info a:hover{color:var(--gold)}
-@media(max-width:700px){.team-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}}
+.team-card-sm p{font-size:.8rem;line-height:1.6}
+.team-card-sm h3{font-size:1.1rem}
+@media(max-width:900px){.team-grid-agents{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.team-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}.team-grid-agents{grid-template-columns:repeat(2,1fr)}}
 
 /* CONTACT */
 .contact-split{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:5rem 0}
@@ -329,7 +340,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
     <div class="hero-content">
       <div class="eyebrow rv">Chicago · Miami · Texas · Los Cabos</div>
-      <h1 class="rv d1">Chicago Roots.<br><em>National Reach.</em></h1>
+      <h1 class="rv d1">Chicago Roots.<br><em>Global Reach.</em></h1>
       <p class="subtitle rv d2">For over 25 years, Prenton Realty has guided clients through the most significant real estate decisions of their lives — across Chicagoland, South Florida, Texas, and the shores of Los Cabos.</p>
       <div class="hero-btns rv d3">
         <a class="btn btn-gold" onclick="go('commercial')">Explore Commercial</a>
@@ -914,6 +925,66 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <a href="tel:3315881703">(331) 588-1703</a>
           <a href="mailto:Edward@PrentonRealty.com">Edward@PrentonRealty.com</a>
           <span style="font-size:.68rem;color:var(--t40)">License #475188531 · Accredited</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-section-label rv">
+      <h3>Our Agents &amp; Associates</h3>
+    </div>
+
+    <div class="team-grid-agents">
+      <div class="team-card team-card-sm rv">
+        <div class="team-photo" style="height:220px" data-label="Basia Sawicka — professional headshot"></div>
+        <h3>Basia Sawicka</h3>
+        <div class="team-title">Design Associate</div>
+        <p>Registered Associate with One Point Wealth Management Group. DePaul University graduate in Finance &amp; Accounting. Bilingual in English and Polish, Basia bridges design expertise with financial acumen to serve a diverse clientele.</p>
+        <div class="team-contact-info">
+          <a href="tel:8158145486">(815) 814-5486</a>
+          <a href="mailto:Basia@PrentonRealty.com">Basia@PrentonRealty.com</a>
+        </div>
+      </div>
+      <div class="team-card team-card-sm rv d1">
+        <div class="team-photo" style="height:220px" data-label="Isabela Sanchez — professional headshot"></div>
+        <h3>Isabela Sanchez</h3>
+        <div class="team-title">Marketing Associate</div>
+        <p>The creative force behind Prenton's brand strategy, digital campaigns, and community engagement. Bilingual in English and Spanish, Isabela ensures every property and every market gets the visibility it deserves.</p>
+        <div class="team-contact-info">
+          <a href="tel:6305503632">(630) 550-3632</a>
+          <a href="mailto:Isabela@PrentonRealty.com">Isabela@PrentonRealty.com</a>
+        </div>
+      </div>
+      <div class="team-card team-card-sm rv d2">
+        <div class="team-photo" style="height:220px" data-label="Gabriela Bertand — professional headshot"></div>
+        <h3>Gabriela Bertand</h3>
+        <div class="team-title">Residential Broker</div>
+        <p>With 5+ years of experience specializing in the Bolingbrook area, Gabriela brings deep local knowledge and a personal touch to every transaction. Originally from Mexico, she is bilingual in English and Spanish.</p>
+        <div class="team-contact-info">
+          <a href="tel:7733163314">(773) 316-3314</a>
+          <a href="mailto:Gabriela@PrentonRealty.com">Gabriela@PrentonRealty.com</a>
+          <span style="font-size:.68rem;color:var(--t40)">License #475176986</span>
+        </div>
+      </div>
+      <div class="team-card team-card-sm rv d3">
+        <div class="team-photo" style="height:220px" data-label="Candice Bailey — professional headshot"></div>
+        <h3>Candice Bailey</h3>
+        <div class="team-title">Residential Broker</div>
+        <p>A dedicated broker with 5+ years in Chicagoland residential real estate. Candice is known for her client-first approach, market expertise, and ability to deliver results in every price range.</p>
+        <div class="team-contact-info">
+          <a href="tel:6304600377">(630) 460-0377</a>
+          <a href="mailto:Candice@PrentonRealty.com">Candice@PrentonRealty.com</a>
+          <span style="font-size:.68rem;color:var(--t40)">License #475184433</span>
+        </div>
+      </div>
+      <div class="team-card team-card-sm rv d4">
+        <div class="team-photo" style="height:220px" data-label="Joseph Santoro — professional headshot"></div>
+        <h3>Joseph Santoro</h3>
+        <div class="team-title">Broker Associate</div>
+        <p>With 5+ years in the field, Joseph brings strong negotiation skills and deep market insight to Prenton's brokerage team. His versatility spans residential and investment properties across the Chicagoland market.</p>
+        <div class="team-contact-info">
+          <a href="tel:6304600377">(630) 460-0377</a>
+          <a href="mailto:Joseph@PrentonRealty.com">Joseph@PrentonRealty.com</a>
+          <span style="font-size:.68rem;color:var(--t40)">License #475118861</span>
         </div>
       </div>
     </div>
