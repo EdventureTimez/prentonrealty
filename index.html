@@ -328,7 +328,7 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 .page{display:none;animation:fade-page .5s ease}.page.active{display:block}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.hero{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
 .hero-bg-img{width:100%;height:100%;object-fit:cover;opacity:.45}
 .hero-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,24,41,.25) 0%,rgba(11,24,41,.55) 50%,var(--bg) 100%)}
@@ -593,10 +593,10 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   <section class="stats-bar section-light">
     <div class="container">
       <div class="stats-grid">
-        <div class="rv"><div class="stat-num">~30</div><div class="stat-label">Years of Service</div></div>
-        <div class="rv d1"><div class="stat-num">$500M+</div><div class="stat-label">Transaction Volume</div></div>
-        <div class="rv d2"><div class="stat-num">5</div><div class="stat-label">Markets Served</div></div>
-        <div class="rv d3"><div class="stat-num">100%</div><div class="stat-label">Client Focused</div></div>
+        <div class="rv"><div class="stat-num" data-count="30" data-prefix="~">~30</div><div class="stat-label">Years of Service</div></div>
+        <div class="rv d1"><div class="stat-num" data-count="500" data-prefix="$" data-suffix="M+">$500M+</div><div class="stat-label">Transaction Volume</div></div>
+        <div class="rv d2"><div class="stat-num" data-count="5">5</div><div class="stat-label">Markets Served</div></div>
+        <div class="rv d3"><div class="stat-num" data-count="100" data-suffix="%">100%</div><div class="stat-label">Client Focused</div></div>
       </div>
     </div>
   </section>
@@ -629,6 +629,14 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <span class="service-link" onclick="go('international')">Explore International →</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Navy accent break -->
+  <section style="background:var(--bg);padding:2.5rem 0;text-align:center">
+    <div class="container rv">
+      <p style="font-family:var(--serif);font-size:clamp(1.1rem,1.8vw,1.35rem);color:var(--t60);font-style:italic;letter-spacing:.03em;margin:0">"Treat every client like they're the only client."</p>
+      <div style="height:2px;width:60px;background:var(--gold);margin:1rem auto 0;opacity:.4"></div>
     </div>
   </section>
 
@@ -675,6 +683,13 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
+  <!-- Navy accent break -->
+  <section style="background:var(--bg);padding:2rem 0;text-align:center">
+    <div class="container rv">
+      <div class="eyebrow" style="justify-content:center;margin-bottom:0">Portfolio Highlights</div>
+    </div>
+  </section>
+
   <!-- Photo Gallery Strip -->
   <section style="padding:0;overflow:hidden">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">
@@ -684,6 +699,9 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <div style="aspect-ratio:4/3;background:url('photos/Gallery — Los Cabos beach sunset or resort.png') center/cover;min-height:200px" data-label="Gallery — Los Cabos beach sunset or resort"></div>
     </div>
   </section>
+
+  <!-- Navy accent break -->
+  <div class="accent-divider"></div>
 
   <!-- Los Cabos Feature -->
   <section class="cabos-feature section-light" style="border-top:1px solid var(--light-border);border-bottom:1px solid var(--light-border)">
@@ -713,7 +731,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Expansion Teaser -->
-  <section class="services-section">
+  <section class="services-section" style="padding:4rem 0">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">Now Serving</div>
@@ -1576,7 +1594,9 @@ function go(page){
   document.getElementById('navLinks').classList.remove('open');
   setTimeout(()=>{
     document.querySelectorAll('.rv').forEach(el=>el.classList.remove('vis'));
+    document.querySelectorAll('.stat-num[data-count]').forEach(el=>delete el.dataset.animated);
     observeReveals();
+    animateCounters();
   },100);
   history.pushState(null,null,'#'+page);
   /* Dynamic page title for SEO */
@@ -1643,6 +1663,37 @@ function handleNDA(e){
   e.target.reset();
   setTimeout(()=>{closeNDA();status.style.display='none'},4000);
 }
+
+/* Animated counters */
+function animateCounters(){
+  const counters=document.querySelectorAll('.stat-num[data-count]');
+  const cObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el=e.target;
+        if(el.dataset.animated) return;
+        el.dataset.animated='1';
+        const target=parseInt(el.dataset.count);
+        const prefix=el.dataset.prefix||'';
+        const suffix=el.dataset.suffix||'';
+        const duration=1800;
+        const start=performance.now();
+        function tick(now){
+          const elapsed=now-start;
+          const progress=Math.min(elapsed/duration,1);
+          const eased=1-Math.pow(1-progress,3);
+          const current=Math.round(eased*target);
+          el.textContent=prefix+current.toLocaleString()+suffix;
+          if(progress<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        cObs.unobserve(el);
+      }
+    });
+  },{threshold:.3});
+  counters.forEach(c=>cObs.observe(c));
+}
+animateCounters();
 
 window.addEventListener('DOMContentLoaded',()=>{
   const hash=location.hash.replace('#','');
