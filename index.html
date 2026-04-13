@@ -255,15 +255,23 @@ ul{list-style:none}button{font-family:inherit;cursor:pointer}
 
 /* Light cabos feature */
 .cabos-feature.section-light{background:var(--light)!important;border-color:var(--light-border)!important}
+.cabos-feature.section-light .cabos-content h2{color:var(--light-text)}
+.cabos-feature.section-light .cabos-content h2 em{color:var(--copper)}
+.cabos-feature.section-light .cabos-content p{color:var(--light-sub)}
 .cabos-feature.section-light .cabos-hl{border-color:var(--light-border);background:#fff}
 .cabos-feature.section-light .cabos-hl strong{color:var(--light-text)}
 .cabos-feature.section-light .cabos-hl span{color:var(--light-muted)}
 
 /* Light wealth section */
 .wealth-section.section-light{background:var(--light)!important;border-color:var(--light-border)!important}
+.wealth-section.section-light .wealth-content h2{color:var(--light-text)}
+.wealth-section.section-light .wealth-content h2 em{color:var(--copper)}
+.wealth-section.section-light .wealth-content p{color:var(--light-sub)}
 .wealth-section.section-light .wealth-svc{border-color:var(--light-border);background:#fff}
 .wealth-section.section-light .wealth-svc strong{color:var(--light-text)}
 .wealth-section.section-light .wealth-svc span{color:var(--light-muted)}
+.wealth-section.section-light .partner-item strong{color:var(--light-text)}
+.wealth-section.section-light .partner-item span{color:var(--light-muted)}
 
 /* Light partners */
 .section-light .partner-item{border-color:var(--light-border);background:#fff}
@@ -606,7 +614,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <div class="hero-gradient"></div>
     </div>
     <div class="hero-content">
-      <div class="eyebrow rv">Chicago · Miami · Texas · Los Cabos</div>
+      <div class="eyebrow rv" style="justify-content:center">Chicago · Miami · Texas · Los Cabos</div>
       <h1 class="rv d1">Chicago Roots.<br><em>Global Reach.</em></h1>
       <p class="subtitle rv d2">For nearly 30 years, Prenton Realty has guided clients through the most significant real estate decisions of their lives — across Chicagoland, South Florida, Texas, and the shores of Los Cabos.</p>
       <div class="hero-btns rv d3">
@@ -710,10 +718,12 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <!-- Navy accent break -->
-  <section style="background:var(--bg);padding:2rem 0;text-align:center">
+  <!-- Navy accent break — Portfolio teaser -->
+  <section style="background:var(--bg);padding:2.5rem 0;text-align:center">
     <div class="container rv">
-      <div class="eyebrow" style="justify-content:center;margin-bottom:0">Portfolio Highlights</div>
+      <div class="eyebrow" style="justify-content:center;margin-bottom:.6rem">Portfolio Highlights</div>
+      <p style="color:var(--t40);font-size:.82rem;margin:0 auto .8rem;max-width:480px;line-height:1.6">From hospitality leases to luxury condominiums and multifamily investments — see how we deliver for our clients.</p>
+      <a class="btn btn-line" onclick="go('portfolio')" style="font-size:.6rem;padding:.6rem 1.6rem">View Our Portfolio →</a>
     </div>
   </section>
 
