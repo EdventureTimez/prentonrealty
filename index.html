@@ -102,7 +102,10 @@
     {"@type": "Person", "name": "Joseph Santoro", "jobTitle": "Broker Associate"}
   ],
   "sameAs": [
-    "https://luxurycabos.com"
+    "https://luxurycabos.com",
+    "https://www.instagram.com/prentonrealty",
+    "https://www.linkedin.com/company/prentonrealty",
+    "https://www.facebook.com/prentonrealty"
   ]
 }
 </script>
@@ -183,7 +186,44 @@ ul{list-style:none}button{font-family:inherit;cursor:pointer}
   --t60:rgba(245,240,232,.6);--t40:rgba(245,240,232,.4);--t20:rgba(245,240,232,.2);--t10:rgba(245,240,232,.1);--t05:rgba(245,240,232,.05);
   --gold10:rgba(197,165,90,.1);--gold20:rgba(197,165,90,.2);
   --serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',system-ui,sans-serif;
+  /* Light section palette */
+  --light:#F5F0E8;--light2:#EDE7DA;--light-text:#1A1A2E;--light-sub:rgba(26,26,46,.6);--light-muted:rgba(26,26,46,.4);--light-border:rgba(11,24,41,.08);
 }
+
+/* Light section utility — cream bg with dark text */
+.section-light{background:var(--light);color:var(--light-text)}
+.section-light h2,.section-light h3,.section-light h4,.section-light strong{color:var(--light-text)}
+.section-light p,.section-light span:not(.stat-label){color:var(--light-sub)}
+.section-light .eyebrow{color:var(--copper)}
+.section-light .eyebrow::before{background:var(--copper)}
+.section-light .service-card{background:#fff;border-color:var(--light-border);box-shadow:0 2px 24px rgba(11,24,41,.04)}
+.section-light .service-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(197,165,90,.1)}
+.section-light .service-card p{color:var(--light-sub)}
+.section-light .service-icon{border-color:var(--gold20);background:linear-gradient(135deg,rgba(197,165,90,.06),rgba(184,125,75,.06))}
+.section-light .service-link{color:var(--copper)}
+.section-light .team-title{color:var(--copper)!important}
+.section-light .team-card p{color:var(--light-sub)}
+.section-light .team-contact-info a,.section-light .team-contact-info span{color:var(--light-muted)}
+.section-light .team-contact-info a:hover{color:var(--copper)}
+.section-light .team-section-label{border-top-color:var(--light-border)}
+.section-light .team-section-label h3{color:var(--light-text)}
+.section-light .btn-gold{background:var(--bg);color:var(--cream)}.section-light .btn-gold:hover{background:var(--bg2)}
+.section-light .btn-line{border-color:var(--bg);color:var(--bg)}.section-light .btn-line:hover{background:var(--bg);color:var(--cream)}
+.section-light .stat-num{color:var(--copper)}
+.section-light .stat-label{color:var(--light-muted)}
+
+/* Warm accent divider */
+.accent-divider{height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--copper),var(--gold),transparent);opacity:.4}
+
+/* Floating contact sidebar */
+.float-sidebar{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;display:flex;flex-direction:column;gap:0}
+.float-sidebar a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:rgba(11,24,41,.85);backdrop-filter:blur(8px);color:var(--cream);font-size:1rem;transition:all .3s;border-left:2px solid transparent;text-decoration:none}
+.float-sidebar a:hover{background:var(--gold);color:var(--bg);border-left-color:var(--gold)}
+.float-sidebar a:first-child{border-radius:6px 0 0 0}
+.float-sidebar a:last-child{border-radius:0 0 0 6px}
+.float-sidebar .sidebar-label{position:absolute;right:100%;white-space:nowrap;background:var(--bg);color:var(--cream);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .8rem;opacity:0;pointer-events:none;transition:opacity .25s;border-radius:4px 0 0 4px}
+.float-sidebar a:hover .sidebar-label{opacity:1}
+@media(max-width:800px){.float-sidebar{display:none}}
 
 .container{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
 section{position:relative}
@@ -227,8 +267,8 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg-img{width:100%;height:100%;object-fit:cover;opacity:.35}
-.hero-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,24,41,.4) 0%,rgba(11,24,41,.7) 50%,var(--bg) 100%)}
+.hero-bg-img{width:100%;height:100%;object-fit:cover;opacity:.45}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,24,41,.25) 0%,rgba(11,24,41,.55) 50%,var(--bg) 100%)}
 .hero-content{position:relative;z-index:2;max-width:820px;padding:0 1.5rem}
 .hero h1{font-size:clamp(2.2rem,5.5vw,4rem);line-height:1.12;margin-bottom:1rem;color:var(--cream)}
 .hero h1 em{font-style:italic;color:var(--gold)}
@@ -431,6 +471,16 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 </head>
 <body>
 
+<!-- FLOATING CONTACT SIDEBAR -->
+<div class="float-sidebar">
+  <a href="tel:6304478315" title="Call us"><span class="sidebar-label">Call</span>&#9742;</a>
+  <a href="https://wa.me/13315881703" target="_blank" rel="noopener" title="WhatsApp"><span class="sidebar-label">WhatsApp</span>&#128172;</a>
+  <a href="mailto:info@prentonrealty.com" title="Email"><span class="sidebar-label">Email</span>&#9993;</a>
+  <a href="https://www.instagram.com/prentonrealty" target="_blank" rel="noopener" title="Instagram"><span class="sidebar-label">Instagram</span>&#128247;</a>
+  <a href="https://www.linkedin.com/company/prentonrealty" target="_blank" rel="noopener" title="LinkedIn"><span class="sidebar-label">LinkedIn</span>&#128279;</a>
+  <a href="https://www.facebook.com/prentonrealty" target="_blank" rel="noopener" title="Facebook"><span class="sidebar-label">Facebook</span>&#102;</a>
+</div>
+
 <!-- NAV -->
 <nav id="mainNav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
@@ -474,7 +524,8 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="stats-bar">
+  <div class="accent-divider"></div>
+  <section class="stats-bar section-light">
     <div class="container">
       <div class="stats-grid">
         <div class="rv"><div class="stat-num">~30</div><div class="stat-label">Years of Service</div></div>
@@ -486,7 +537,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Services -->
-  <section class="services-section">
+  <section class="services-section section-light">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">What We Do</div>
@@ -559,6 +610,16 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
+  <!-- Photo Gallery Strip -->
+  <section style="padding:0;overflow:hidden">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px">
+      <div style="aspect-ratio:4/3;background:url('photos/Gallery — closing day handshake or happy clients.png') center/cover;min-height:200px" data-label="Gallery — closing day handshake or happy clients"></div>
+      <div style="aspect-ratio:4/3;background:url('photos/Gallery — Naperville Riverwalk or downtown scene.png') center/cover;min-height:200px" data-label="Gallery — Naperville Riverwalk or downtown scene"></div>
+      <div style="aspect-ratio:4/3;background:url('photos/Gallery — luxury property interior or pool.png') center/cover;min-height:200px" data-label="Gallery — luxury property interior or pool"></div>
+      <div style="aspect-ratio:4/3;background:url('photos/Gallery — Los Cabos beach sunset or resort.png') center/cover;min-height:200px" data-label="Gallery — Los Cabos beach sunset or resort"></div>
+    </div>
+  </section>
+
   <!-- Los Cabos Feature -->
   <section class="cabos-feature">
     <div class="container">
@@ -609,7 +670,8 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="cta-banner">
+  <div class="accent-divider"></div>
+  <section class="cta-banner section-light">
     <div class="container rv">
       <div class="eyebrow" style="justify-content:center">Start the Conversation</div>
       <h2>Ready to Make Your Next Move?</h2>
@@ -724,7 +786,8 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="cta-banner">
+  <div class="accent-divider"></div>
+  <section class="cta-banner section-light">
     <div class="container rv">
       <div class="eyebrow" style="justify-content:center">Commercial Inquiries</div>
       <h2>Let's Discuss Your Next Investment</h2>
@@ -814,7 +877,8 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="cta-banner">
+  <div class="accent-divider"></div>
+  <section class="cta-banner section-light">
     <div class="container rv">
       <div class="eyebrow" style="justify-content:center">Residential Inquiries</div>
       <h2>Let's Find Your Perfect Home</h2>
@@ -1066,12 +1130,14 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
+  <div class="accent-divider"></div>
+  <div class="section-light" style="padding:1rem 0 0">
   <div class="container">
     <div class="team-grid">
       <div class="team-card rv">
         <div class="team-photo" style="background:url('photos/Paul Sanchez — professional headshot.png') center/cover"></div>
         <h3>Paul Sanchez</h3>
-        <div class="team-title">Managing Broker &amp; Founder · REALTOR&reg;</div>
+        <div class="team-title" style="color:var(--copper)">Managing Broker &amp; Founder · REALTOR&reg;</div>
         <p>With nearly 30 years in Chicagoland real estate, Paul is one of the most experienced brokers in the western suburbs. He founded Prenton Realty on the belief that clients deserve more than a transaction — they deserve a trusted advisor. His experience spans residential, commercial, and investment real estate across every market cycle, and his deep relationships across the industry are the foundation the firm is built on. Accredited Commercial Practitioners on staff.</p>
         <div class="team-contact-info">
           <a href="tel:6304600377">(630) 460-0377</a>
@@ -1163,6 +1229,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       </div>
     </div>
   </div>
+  </div><!-- end section-light -->
 
   <!-- Heritage + Partners -->
   <section class="split" style="background:var(--bg2);border-top:1px solid var(--t05)">
@@ -1382,6 +1449,12 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <div class="nav-logo-text">Prenton <span>Realty</span></div>
         </div>
         <p>Full-service real estate brokerage serving Chicago, South Florida, Texas, and Los Cabos for nearly 30 years.</p>
+        <div style="display:flex;gap:.8rem;margin-top:.8rem">
+          <a href="https://www.instagram.com/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="Instagram">&#128247;</a>
+          <a href="https://www.linkedin.com/company/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="LinkedIn">&#128279;</a>
+          <a href="https://www.facebook.com/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="Facebook">f</a>
+          <a href="https://www.youtube.com/@prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="YouTube">&#9654;</a>
+        </div>
         <p style="margin-top:.8rem"><a href="tel:6304478315" style="color:var(--gold)">(630) 447-8315</a></p>
       </div>
       <div class="footer-col">
