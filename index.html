@@ -207,6 +207,69 @@ ul{list-style:none}button{font-family:inherit;cursor:pointer}
 .section-light .team-contact-info a:hover{color:var(--copper)}
 .section-light .team-section-label{border-top-color:var(--light-border)}
 .section-light .team-section-label h3{color:var(--light-text)}
+
+/* Light split sections */
+.split.split-light{background:var(--light)!important}
+.split.split-light .split-text h2{color:var(--light-text)}
+.split.split-light .split-text p{color:var(--light-sub)}
+.split.split-light .eyebrow{color:var(--copper)}
+.split.split-light .eyebrow::before{background:var(--copper)}
+.split.split-light .btn-line{border-color:var(--bg);color:var(--bg)}.split.split-light .btn-line:hover{background:var(--bg);color:var(--cream)}
+
+/* Light listings */
+.listings-section.section-light{background:var(--light)!important;border-color:var(--light-border)!important}
+.section-light .listing-card{background:#fff;border-color:var(--light-border);box-shadow:0 2px 16px rgba(11,24,41,.04)}
+.section-light .listing-card:hover{border-color:var(--gold);box-shadow:0 6px 24px rgba(197,165,90,.1)}
+.section-light .listing-info h4{color:var(--light-text)}
+.section-light .listing-info .listing-meta{color:var(--copper)}
+.section-light .listing-info p{color:var(--light-muted)}
+.section-light .listings-intro{color:var(--light-muted)}
+
+/* Light expertise cards */
+.section-light .expertise-card{border-color:var(--light-border);background:#fff;box-shadow:0 1px 12px rgba(11,24,41,.03)}
+.section-light .expertise-card:hover{border-color:var(--gold);background:rgba(197,165,90,.04)}
+.section-light .expertise-card h4{color:var(--light-text)}
+.section-light .expertise-card p{color:var(--light-sub)}
+
+/* Light market cards */
+.section-light .market-card{border-color:var(--light-border);background:#fff;box-shadow:0 2px 16px rgba(11,24,41,.04)}
+.section-light .market-card:hover{border-color:var(--gold);box-shadow:0 6px 24px rgba(197,165,90,.08)}
+.section-light .market-card h3{color:var(--light-text)}
+.section-light .market-card .market-sub{color:var(--copper)}
+.section-light .market-card p{color:var(--light-sub)}
+
+/* Light contact */
+.section-light .contact-info h2{color:var(--light-text)}
+.section-light .contact-info p{color:var(--light-sub)}
+.section-light .contact-item strong{color:var(--light-text)}
+.section-light .contact-item span,.section-light .contact-item a{color:var(--light-muted)}
+.section-light .contact-icon{border-color:var(--light-border);color:var(--copper)}
+.section-light .form-group label{color:var(--light-muted)}
+.section-light .form-group input,.section-light .form-group textarea,.section-light .form-group select{background:#fff;border-color:var(--light-border);color:var(--light-text)}
+.section-light .form-group input:focus,.section-light .form-group textarea:focus,.section-light .form-group select:focus{border-color:var(--gold)}
+
+/* Light confidential card */
+.section-light .confidential-card{background:#fff;border-color:var(--gold20);box-shadow:0 2px 20px rgba(197,165,90,.06)}
+.section-light .confidential-card h3{color:var(--light-text)}
+.section-light .confidential-card p{color:var(--light-sub)}
+
+/* Light cabos feature */
+.cabos-feature.section-light{background:var(--light)!important;border-color:var(--light-border)!important}
+.cabos-feature.section-light .cabos-hl{border-color:var(--light-border);background:#fff}
+.cabos-feature.section-light .cabos-hl strong{color:var(--light-text)}
+.cabos-feature.section-light .cabos-hl span{color:var(--light-muted)}
+
+/* Light wealth section */
+.wealth-section.section-light{background:var(--light)!important;border-color:var(--light-border)!important}
+.wealth-section.section-light .wealth-svc{border-color:var(--light-border);background:#fff}
+.wealth-section.section-light .wealth-svc strong{color:var(--light-text)}
+.wealth-section.section-light .wealth-svc span{color:var(--light-muted)}
+
+/* Light partners */
+.section-light .partner-item{border-color:var(--light-border);background:#fff}
+.section-light .partner-item strong{color:var(--light-text)}
+.section-light .partner-item span{color:var(--light-muted)}
+.section-light .partners-bar h3{color:var(--light-muted)}
 .section-light .btn-gold{background:var(--bg);color:var(--cream)}.section-light .btn-gold:hover{background:var(--bg2)}
 .section-light .btn-line{border-color:var(--bg);color:var(--bg)}.section-light .btn-line:hover{background:var(--bg);color:var(--cream)}
 .section-light .stat-num{color:var(--copper)}
@@ -216,12 +279,12 @@ ul{list-style:none}button{font-family:inherit;cursor:pointer}
 .accent-divider{height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--copper),var(--gold),transparent);opacity:.4}
 
 /* Floating contact sidebar */
-.float-sidebar{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;display:flex;flex-direction:column;gap:0}
-.float-sidebar a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:rgba(11,24,41,.85);backdrop-filter:blur(8px);color:var(--cream);font-size:1rem;transition:all .3s;border-left:2px solid transparent;text-decoration:none}
-.float-sidebar a:hover{background:var(--gold);color:var(--bg);border-left-color:var(--gold)}
-.float-sidebar a:first-child{border-radius:6px 0 0 0}
-.float-sidebar a:last-child{border-radius:0 0 0 6px}
-.float-sidebar .sidebar-label{position:absolute;right:100%;white-space:nowrap;background:var(--bg);color:var(--cream);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .8rem;opacity:0;pointer-events:none;transition:opacity .25s;border-radius:4px 0 0 4px}
+.float-sidebar{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;display:flex;flex-direction:column;gap:1px}
+.float-sidebar a{display:flex;align-items:center;justify-content:center;width:46px;height:46px;background:rgba(11,24,41,.92);backdrop-filter:blur(12px);color:var(--gold);font-size:1.05rem;transition:all .35s;border:1px solid rgba(197,165,90,.15);border-right:none;text-decoration:none}
+.float-sidebar a:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.float-sidebar a:first-child{border-radius:8px 0 0 0}
+.float-sidebar a:last-child{border-radius:0 0 0 8px}
+.float-sidebar .sidebar-label{position:absolute;right:100%;white-space:nowrap;background:var(--bg);color:var(--gold);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;padding:.45rem .9rem;opacity:0;pointer-events:none;transition:opacity .25s;border:1px solid rgba(197,165,90,.2);border-right:none;border-radius:4px 0 0 4px}
 .float-sidebar a:hover .sidebar-label{opacity:1}
 @media(max-width:800px){.float-sidebar{display:none}}
 
@@ -277,6 +340,7 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 
 /* STATS */
 .stats-bar{background:var(--bg2);border-top:1px solid var(--t05);border-bottom:1px solid var(--t05);padding:3rem 0}
+.stats-bar.section-light{background:var(--light);border-color:var(--light-border)}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
 .stat-num{font-family:var(--serif);font-size:clamp(2rem,3.5vw,2.8rem);color:var(--gold);line-height:1.1}
 .stat-label{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t40);margin-top:.4rem}
@@ -450,6 +514,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 
 /* CTA BANNER */
 .cta-banner{padding:6rem 0;text-align:center;background:linear-gradient(135deg,var(--bg2),var(--bg))}
+.cta-banner.section-light{background:var(--light)!important}
 .cta-banner h2{font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:.6rem}
 .cta-banner p{color:var(--t60);font-size:.92rem;margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto}
 
@@ -568,7 +633,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Wealth Advisory Partnership -->
-  <section class="wealth-section" style="background:var(--bg2);border-top:1px solid var(--t05);border-bottom:1px solid var(--t05)">
+  <section class="wealth-section section-light" style="border-bottom:1px solid var(--light-border)">
     <div class="container">
       <div class="wealth-grid">
         <div class="wealth-content rv">
@@ -596,7 +661,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- About Preview -->
-  <section class="split">
+  <section class="split split-light">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/Prenton Realty office exterior — 5 S. Washington, Naperville.png') center/cover"></div>
     </div>
@@ -621,7 +686,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Los Cabos Feature -->
-  <section class="cabos-feature">
+  <section class="cabos-feature section-light" style="border-top:1px solid var(--light-border);border-bottom:1px solid var(--light-border)">
     <div class="container">
       <div class="cabos-inner">
         <div class="cabos-imagery rv">
@@ -724,7 +789,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </div>
 
   <!-- Wealth Partners in Commercial Context -->
-  <section class="split" style="background:var(--bg2);border-top:1px solid var(--t05)">
+  <section class="split split-light" style="border-top:1px solid var(--light-border)">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/Chicago commercial district — modern office tower or multifamily building.png') center/cover"></div>
     </div>
@@ -740,7 +805,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Featured Listings -->
-  <section class="listings-section">
+  <section class="listings-section section-light" style="border-top:1px solid var(--light-border)">
     <div class="container">
       <div class="eyebrow rv" style="justify-content:center">Featured Opportunities</div>
       <h2 class="rv d1">Active Commercial Listings</h2>
@@ -810,7 +875,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="split" style="margin-top:0">
+  <section class="split split-light" style="margin-top:0">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/Beautiful suburban home exterior — Naperville neighborhood.png') center/cover"></div>
     </div>
@@ -824,7 +889,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="split reverse">
+  <section class="split reverse split-light">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/Interior staging photo — luxury living room or kitchen.png') center/cover"></div>
     </div>
@@ -839,7 +904,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Relocation & Wealth Clients -->
-  <section class="split" style="background:var(--bg2);border-top:1px solid var(--t05)">
+  <section class="split split-light" style="border-top:1px solid var(--light-border)">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/Chicago city view from luxury condo — relocation client perspective.png') center/cover"></div>
     </div>
@@ -854,7 +919,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="services-section">
+  <section class="services-section section-light">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">Areas We Serve</div>
@@ -908,7 +973,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="stats-bar">
+  <section class="stats-bar section-light">
     <div class="container">
       <div class="stats-grid">
         <div class="rv"><div class="stat-num">20%</div><div class="stat-label">Annual Appreciation</div></div>
@@ -919,7 +984,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="split" style="margin-top:0">
+  <section class="split split-light" style="margin-top:0">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/128 Founders — architectural rendering of oceanfront residence.png') center/cover"></div>
     </div>
@@ -934,7 +999,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="split reverse">
+  <section class="split reverse split-light">
     <div class="split-img">
       <div class="split-img-placeholder" style="background:url('photos/ritz-carlton-exterior.png') center/cover"></div>
     </div>
@@ -950,7 +1015,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Cancun Off-Market -->
-  <section class="listings-section">
+  <section class="listings-section section-light" style="border-top:1px solid var(--light-border)">
     <div class="container">
       <div class="confidential-card rv">
         <div class="lock-icon">&#128274;</div>
@@ -963,7 +1028,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Full-Service International Closing -->
-  <section class="split" style="background:var(--bg2);border-top:1px solid var(--t05)">
+  <section class="split split-light" style="border-top:1px solid var(--light-border)">
     <div class="split-text" style="width:100%">
       <div class="split-text-inner rv" style="max-width:900px;margin:0 auto">
         <div class="eyebrow">Full-Service International Brokerage</div>
@@ -999,7 +1064,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Cancun Investment Opportunities -->
-  <section class="services-section" style="border-top:1px solid var(--t05)">
+  <section class="services-section section-light" style="border-top:1px solid var(--light-border)">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">Emerging Opportunities</div>
@@ -1010,7 +1075,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
-  <section class="services-section" style="background:var(--bg2);border-top:1px solid var(--t05)">
+  <section class="services-section section-light" style="border-top:1px solid var(--light-border)">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">Why Los Cabos</div>
@@ -1063,6 +1128,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
+  <section class="section-light" style="padding:6rem 0;border-bottom:1px solid var(--light-border)">
   <div class="container">
     <div class="market-cards rv">
       <div class="market-card">
@@ -1081,9 +1147,10 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       </div>
     </div>
   </div>
+  </section>
 
   <!-- Why These Markets -->
-  <section class="services-section" style="background:var(--bg2);border-top:1px solid var(--t05);margin-top:4rem">
+  <section class="services-section section-light" style="border-top:1px solid var(--light-border);margin-top:0">
     <div class="container">
       <div class="services-header rv">
         <div class="eyebrow" style="justify-content:center">The Opportunity</div>
@@ -1268,6 +1335,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
   </section>
 
+  <section class="section-light" style="padding:6rem 0">
   <div class="container">
     <div class="contact-split">
       <div class="contact-info rv">
@@ -1333,6 +1401,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       </form>
     </div>
   </div>
+  </section>
 
   <section style="padding:0 0 4rem">
     <div class="container">
@@ -1449,11 +1518,11 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <div class="nav-logo-text">Prenton <span>Realty</span></div>
         </div>
         <p>Full-service real estate brokerage serving Chicago, South Florida, Texas, and Los Cabos for nearly 30 years.</p>
-        <div style="display:flex;gap:.8rem;margin-top:.8rem">
-          <a href="https://www.instagram.com/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="Instagram">&#128247;</a>
-          <a href="https://www.linkedin.com/company/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="LinkedIn">&#128279;</a>
-          <a href="https://www.facebook.com/prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="Facebook">f</a>
-          <a href="https://www.youtube.com/@prentonrealty" target="_blank" rel="noopener" style="width:32px;height:32px;border:1px solid var(--t20);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--t40);transition:all .3s" title="YouTube">&#9654;</a>
+        <div style="display:flex;gap:.6rem;margin-top:.8rem">
+          <a href="https://www.instagram.com/prentonrealty" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid var(--gold20);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--gold);transition:all .3s" title="Instagram" onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">&#128247;</a>
+          <a href="https://www.linkedin.com/company/prentonrealty" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid var(--gold20);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--gold);transition:all .3s" title="LinkedIn" onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">&#128279;</a>
+          <a href="https://www.facebook.com/prentonrealty" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid var(--gold20);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--gold);font-family:var(--serif);font-weight:600;transition:all .3s" title="Facebook" onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">f</a>
+          <a href="https://www.youtube.com/@prentonrealty" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid var(--gold20);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--gold);transition:all .3s" title="YouTube" onmouseover="this.style.background='var(--gold)';this.style.color='var(--bg)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">&#9654;</a>
         </div>
         <p style="margin-top:.8rem"><a href="tel:6304478315" style="color:var(--gold)">(630) 447-8315</a></p>
       </div>
