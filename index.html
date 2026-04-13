@@ -532,6 +532,32 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 .wealth-svc strong{display:block;font-family:var(--serif);font-size:1rem;color:var(--cream);font-weight:400}
 .wealth-svc span{font-size:.75rem;color:var(--t40)}
 @media(max-width:800px){.wealth-grid{grid-template-columns:1fr;gap:2.5rem}}
+
+/* PORTFOLIO SHOWCASE */
+.portfolio-intro{max-width:720px;margin:0 auto 1rem;text-align:center}
+.portfolio-intro p{color:var(--t60);font-size:.95rem;line-height:1.75}
+.showcase{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:480px}
+.showcase.reverse{direction:rtl}.showcase.reverse>*{direction:ltr}
+.showcase-imgs{display:grid;gap:3px;position:relative;overflow:hidden}
+.showcase-imgs.dual{grid-template-rows:1fr 1fr}
+.showcase-imgs.single{grid-template-rows:1fr}
+.showcase-img{width:100%;height:100%;min-height:220px;background:linear-gradient(135deg,var(--bg2),var(--bg3)) center/cover;position:relative}
+.showcase-img::after{content:attr(data-label);position:absolute;bottom:.8rem;left:.8rem;right:.8rem;font-size:.6rem;color:var(--t40);letter-spacing:.08em;background:rgba(11,24,41,.7);padding:.4rem .6rem;opacity:0;transition:opacity .3s}
+.showcase-img:hover::after{opacity:1}
+.showcase-text{display:flex;align-items:center;padding:3.5rem clamp(2rem,4.5vw,3.5rem)}
+.showcase-text-inner{max-width:520px}
+.showcase-text-inner .eyebrow{margin-bottom:.6rem}
+.showcase-text-inner h3{font-family:var(--serif);font-size:clamp(1.3rem,2.2vw,1.7rem);line-height:1.2;margin-bottom:.3rem;color:var(--cream);font-weight:400}
+.showcase-text-inner .showcase-location{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:block}
+.showcase-text-inner p{font-size:.88rem;line-height:1.75;color:var(--t60);margin-bottom:0}
+.showcase-text-inner .showcase-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.showcase-text-inner .showcase-tag{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .75rem;border:1px solid var(--t10);color:var(--t40)}
+.section-light .showcase-text-inner h3{color:var(--light-text)}
+.section-light .showcase-text-inner p{color:var(--light-sub)}
+.section-light .showcase-text-inner .showcase-tag{border-color:var(--light-border);color:var(--light-muted)}
+.section-light .showcase-img{background-color:var(--light2)}
+.section-light .showcase-img::after{background:rgba(245,240,232,.85);color:var(--light-muted)}
+@media(max-width:800px){.showcase,.showcase.reverse{grid-template-columns:1fr;direction:ltr}.showcase>*{direction:ltr}.showcase-imgs{min-height:300px}.showcase-imgs.dual{grid-template-rows:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -559,6 +585,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <a onclick="go('residential')" data-page="residential">Residential</a>
       <a onclick="go('international')" data-page="international">International</a>
       <a onclick="go('markets')" data-page="markets">Markets</a>
+      <a onclick="go('portfolio')" data-page="portfolio">Portfolio</a>
       <a onclick="go('team')" data-page="team">Our Team</a>
       <a onclick="go('contact')" class="nav-cta" data-page="contact">Contact</a>
     </div>
@@ -1203,6 +1230,215 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 </div>
 
 <!-- ══════════════════════════════════════
+     PORTFOLIO PAGE
+     ══════════════════════════════════════ -->
+<div class="page" id="page-portfolio">
+  <section class="page-hero">
+    <div class="page-hero-bg" style="background:linear-gradient(135deg,#0e2038,#152a42)"></div>
+    <div class="page-hero-content">
+      <div class="eyebrow rv" style="justify-content:center">Selected Transactions</div>
+      <h1 class="rv d1">Our <em>Portfolio</em></h1>
+      <p class="rv d2">Our portfolio reflects the range of our practice and the depth of our advisory approach. From hospitality leases and industrial transactions to luxury condominiums, multifamily investments, and single-family homes in premier suburban neighborhoods, we help clients make smart real estate decisions with clarity, strategy, and confidence.</p>
+    </div>
+  </section>
+
+  <!-- 1 · Block 59 — Perfect Manhattan Speakeasy -->
+  <section class="section-light" style="padding:0">
+    <div class="showcase rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — Block 59 exterior, Naperville.png') center/cover" data-label="Block 59 exterior"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — Perfect Manhattan speakeasy interior.png') center/cover" data-label="Perfect Manhattan interior"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Hospitality Lease</div>
+          <h3>Block 59 — Perfect Manhattan Speakeasy</h3>
+          <span class="showcase-location">Naperville, Illinois</span>
+          <p>Represented the tenant in the successful leasing and negotiation of Perfect Manhattan, an upscale speakeasy concept at Block 59 in Naperville. The approximately 4,000 square foot space involved a highly visible hospitality transaction at one of the western suburbs' most prominent entertainment destinations. The assignment required strategic guidance around lease structure, use language, concept positioning, and long-term planning — reflecting our ability to help ambitious operators secure marquee locations while protecting the integrity of their vision.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Tenant Rep</span>
+            <span class="showcase-tag">~4,000 SF</span>
+            <span class="showcase-tag">Hospitality</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="accent-divider"></div>
+
+  <!-- 2 · Digs with Dignity — Nonprofit Industrial -->
+  <section style="padding:0">
+    <div class="showcase reverse rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — Digs with Dignity warehouse facility.png') center/cover" data-label="Industrial facility exterior"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — Digs with Dignity operations interior.png') center/cover" data-label="Warehouse operations"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Nonprofit Industrial</div>
+          <h3>Digs with Dignity</h3>
+          <span class="showcase-location">Chicago Area</span>
+          <p>Represented Digs with Dignity in securing an approximately 25,000 square foot industrial facility tailored to its operational needs and mission-driven work. The transaction required balancing warehouse functionality, accessibility, logistics, budget sensitivity, and long-term flexibility. This assignment highlights our ability to bring sophisticated commercial real estate guidance to nonprofit organizations and help them secure facilities that support efficient operations and meaningful long-term impact.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Tenant Rep</span>
+            <span class="showcase-tag">~25,000 SF</span>
+            <span class="showcase-tag">Industrial</span>
+            <span class="showcase-tag">Nonprofit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="accent-divider"></div>
+
+  <!-- 3 · Cirrus Condominiums -->
+  <section class="section-light" style="padding:0">
+    <div class="showcase rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — Cirrus tower exterior, Chicago lakefront.png') center/cover" data-label="Cirrus tower, 211 N Harbor Dr"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — Cirrus luxury condo interior.png') center/cover" data-label="Cirrus residence interior"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Luxury Residential</div>
+          <h3>Cirrus Condominiums</h3>
+          <span class="showcase-location">211 North Harbor Drive · Chicago, Illinois</span>
+          <p>Successfully represented clients in multiple luxury condominium transactions at Cirrus, one of Chicago's premier lakefront residential towers. Our work included larger-format residences with two-to-three bedroom floor plans, where purchase decisions required careful attention to layout, value, timing, and negotiation strategy. These assignments reflect our ability to advise discerning buyers in premier buildings with a high level of discretion, analytical rigor, and market awareness.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Buyer Rep</span>
+            <span class="showcase-tag">Luxury Condo</span>
+            <span class="showcase-tag">Lakefront</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navy accent quote -->
+  <section style="background:var(--bg);padding:2.5rem 0;text-align:center">
+    <div class="container rv">
+      <p style="font-family:var(--serif);font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--t60);font-style:italic;letter-spacing:.03em;margin:0">"We serve not just as brokers, but as trusted long-term advisors."</p>
+      <div style="height:2px;width:60px;background:var(--gold);margin:1rem auto 0;opacity:.4"></div>
+    </div>
+  </section>
+
+  <!-- 4 · Project Achilles — Gym -->
+  <section class="section-light" style="padding:0">
+    <div class="showcase reverse rv">
+      <div class="showcase-imgs single">
+        <div class="showcase-img" style="background:url('photos/Portfolio — Project Achilles gym interior, Chicago.png') center/cover" data-label="Project Achilles gym"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Experiential Retail</div>
+          <h3>Project Achilles</h3>
+          <span class="showcase-location">Chicago, Illinois</span>
+          <p>Represented Project Achilles in a Chicago gym transaction involving approximately 3,000 square feet. Fitness and experiential concepts demand careful consideration of visibility, access, flow, neighborhood fit, and long-term operating potential. This assignment reflects our ability to help service-based and community-driven concepts secure locations that support both brand growth and functional success.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Tenant Rep</span>
+            <span class="showcase-tag">~3,000 SF</span>
+            <span class="showcase-tag">Fitness</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="accent-divider"></div>
+
+  <!-- 5 · Multifamily Investment Portfolio -->
+  <section style="padding:0">
+    <div class="showcase rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — Chicagoland multifamily building exterior.png') center/cover" data-label="Multifamily property"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — multifamily investment analysis or walkthrough.png') center/cover" data-label="Investment walkthrough"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Investment Advisory</div>
+          <h3>Multifamily Investment Portfolio</h3>
+          <span class="showcase-location">Chicagoland Area</span>
+          <p>Advised clients in the strategic acquisition of multifamily properties across the Chicagoland area as part of broader long-term investment and wealth-building strategies. Our role extended well beyond identifying opportunities — we helped clients evaluate neighborhood selection, rental income potential, operational realities, long-term appreciation, and overall portfolio fit. For first-time landlords, we also provided practical guidance on common pitfalls, leasing expectations, and maintenance considerations.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Buyer Advisory</span>
+            <span class="showcase-tag">Multifamily</span>
+            <span class="showcase-tag">Investment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="accent-divider"></div>
+
+  <!-- 6 · Suburban Single Family Homes -->
+  <section class="section-light" style="padding:0">
+    <div class="showcase reverse rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — suburban Naperville home exterior.png') center/cover" data-label="Naperville single-family home"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — suburban home interior or neighborhood street.png') center/cover" data-label="Neighborhood scene"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Residential — Western Suburbs</div>
+          <h3>Suburban Single-Family Homes</h3>
+          <span class="showcase-location">Naperville · White Eagle · Tall Grass · Stonebridge</span>
+          <p>Our team has represented families in single-family home purchases and sales across many of the western suburbs' most established and desirable neighborhoods. These are not one-off transactions, but part of years of ongoing work in communities where school boundaries, neighborhood reputation, lot quality, home updates, and long-term resale value all materially influence decision-making. We understand how to guide families through these purchases thoughtfully and strategically, whether they are buying a long-term residence, moving up, or repositioning for the next stage of life.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Buyer &amp; Seller Rep</span>
+            <span class="showcase-tag">Single Family</span>
+            <span class="showcase-tag">Suburban</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navy accent quote -->
+  <section style="background:var(--bg);padding:2.5rem 0;text-align:center">
+    <div class="container rv">
+      <p style="font-family:var(--serif);font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--t60);font-style:italic;letter-spacing:.03em;margin:0">"Smart real estate decisions start with the right advisory relationship."</p>
+      <div style="height:2px;width:60px;background:var(--gold);margin:1rem auto 0;opacity:.4"></div>
+    </div>
+  </section>
+
+  <!-- 7 · Weston, Florida — Luxury Residential -->
+  <section class="section-light" style="padding:0">
+    <div class="showcase rv">
+      <div class="showcase-imgs dual">
+        <div class="showcase-img" style="background:url('photos/Portfolio — 3076 Birkdale Dr, Weston FL exterior.png') center/cover" data-label="3076 Birkdale Dr, Weston FL"></div>
+        <div class="showcase-img" style="background:url('photos/Portfolio — Weston FL luxury home interior or pool.png') center/cover" data-label="Weston luxury residence"></div>
+      </div>
+      <div class="showcase-text">
+        <div class="showcase-text-inner">
+          <div class="eyebrow">Luxury Residential — Florida</div>
+          <h3>3076 Birkdale Drive</h3>
+          <span class="showcase-location">Weston, Florida</span>
+          <p>Represented the sale of 3076 Birkdale Drive in Weston, Florida, a luxury residential transaction that reflects the long-term value of thoughtful real estate decision-making. Previously sold for approximately $1.3 million in 2014, the property has since experienced substantial appreciation — standing as one example of the successful buying, holding, and selling outcomes we help our clients pursue. This transaction reflects our ability to guide clients through high-value residential decisions with both a lifestyle and investment perspective.</p>
+          <div class="showcase-tags">
+            <span class="showcase-tag">Seller Rep</span>
+            <span class="showcase-tag">Luxury Home</span>
+            <span class="showcase-tag">~$1.3M+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="accent-divider"></div>
+  <section class="cta-banner section-light">
+    <div class="container rv">
+      <div class="eyebrow" style="justify-content:center">Your Transaction Deserves This Level of Care</div>
+      <h2>Let's Discuss Your Next Move</h2>
+      <p>Whether it's a 4,000 SF lease or a $6.5M international residence, every client receives the same institutional-grade advisory and personal attention.</p>
+      <a class="btn btn-gold" onclick="go('contact')">Get in Touch</a>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════
      TEAM PAGE
      ══════════════════════════════════════ -->
 <div class="page" id="page-team">
@@ -1606,6 +1842,7 @@ function go(page){
     residential:'Residential Real Estate — Luxury Homes in Naperville & Chicago | Prenton Realty',
     international:'International Luxury Real Estate — Los Cabos, 128 Founders, Ritz-Carlton Reserve | Prenton Realty',
     markets:'Florida & Texas Real Estate Expansion | Prenton Realty',
+    portfolio:'Portfolio — Featured Transactions & Case Studies | Prenton Realty',
     team:'Our Team — Nearly 30 Years of Real Estate Experience | Prenton Realty',
     contact:'Contact Prenton Realty — Naperville, IL | (630) 447-8315',
     privacy:'Privacy Policy | Prenton Realty',
@@ -1718,6 +1955,8 @@ window.addEventListener('popstate',()=>{
 <p>Explore ultra-luxury resort residences in Puerto Los Cabos, Mexico, including 128 Founders and The Ritz-Carlton Reserve at Zadún. Full-service international closing assistance with legal, notarial, appraisal, and financing coordination.</p>
 <h2>Florida &amp; Texas Markets</h2>
 <p>Prenton Realty is now active in Miami, Fort Lauderdale, Weston, and key Texas metros — bringing our nearly 30-year track record of client-first advisory to two of America's fastest-growing real estate markets.</p>
+<h2>Portfolio — Selected Transactions</h2>
+<p>Our portfolio includes hospitality leases at Block 59 in Naperville, nonprofit industrial facilities for Digs with Dignity, luxury condominiums at Cirrus in Chicago, fitness concepts, multifamily investment acquisitions across Chicagoland, suburban single-family homes in Naperville's most desirable neighborhoods, and luxury residential sales in Weston, Florida.</p>
 <h2>Contact Prenton Realty</h2>
 <p>Phone: <a href="tel:6304478315">(630) 447-8315</a> | Email: <a href="mailto:info@prentonrealty.com">info@prentonrealty.com</a> | WhatsApp: <a href="https://wa.me/13315881703">+1 (331) 588-1703</a></p>
 <p>5 South Washington Street, Naperville, IL 60540</p>
