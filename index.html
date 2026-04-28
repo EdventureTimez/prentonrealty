@@ -34,8 +34,7 @@
 <meta name="twitter:description" content="Over 25 years of full-service real estate. Commercial, residential, and luxury international properties.">
 <meta name="twitter:image" content="https://prentonrealty.com/photos/prenton-logo.png">
 
-<!-- Google Search Console — replace YOUR_VERIFICATION_CODE with the code from GSC -->
-<!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
+<!-- Google Search Console — verified via DNS (domain property) -->
 <link rel="canonical" href="https://prentonrealty.com">
 
 <!-- Primary Organization Schema -->
@@ -1736,7 +1735,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
         </div>
       </div>
 
-      <form class="contact-form rv d2" id="contactForm" onsubmit="handleSubmit(event)">
+      <form class="contact-form rv d2" id="contactForm">
         <div class="form-row">
           <div class="form-group"><label for="firstName">First Name</label><input type="text" id="firstName" name="firstName" required></div>
           <div class="form-group"><label for="lastName">Last Name</label><input type="text" id="lastName" name="lastName" required></div>
@@ -1776,9 +1775,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 
   <section style="padding:0 0 4rem">
     <div class="container">
-      <div style="width:100%;aspect-ratio:21/9;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--t10);display:flex;align-items:center;justify-content:center">
-        <span style="font-size:.72rem;color:var(--t40);letter-spacing:.15em;text-transform:uppercase">Google Maps Embed — 5 S. Washington St, Naperville, IL</span>
-      </div>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2975.8!2d-88.1535!3d41.7709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e57ce1a0b1f9b%3A0x5e3e2e0c7d0c1a2e!2s5%20S%20Washington%20St%2C%20Naperville%2C%20IL%2060540!5e0!3m2!1sen!2sus!4v1714200000000" width="100%" height="350" style="border:1px solid var(--t10);filter:grayscale(.3) brightness(.85);border-radius:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Prenton Realty Office — 5 S. Washington St, Naperville, IL"></iframe>
     </div>
   </section>
 </div>
@@ -1792,7 +1789,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     <div class="eyebrow" style="margin-bottom:1rem">Confidential Inquiry</div>
     <h3>Non-Disclosure Agreement Required</h3>
     <p>The details of this off-market hospitality asset are shared exclusively with qualified investors who agree to maintain confidentiality. By submitting this form, you acknowledge and agree to the terms below.</p>
-    <form id="ndaForm" onsubmit="handleNDA(event)">
+    <form id="ndaForm">
       <div class="form-row" style="margin-bottom:1rem">
         <div class="form-group"><label>Full Name</label><input type="text" name="ndaName" required></div>
         <div class="form-group"><label>Email</label><input type="email" name="ndaEmail" required></div>
@@ -1818,8 +1815,9 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <div class="eyebrow" style="justify-content:center">Stay Informed</div>
       <h2 style="font-family:var(--serif);font-size:clamp(1.4rem,2.5vw,1.8rem);margin:.8rem 0">Market Insights &amp; Opportunities</h2>
       <p style="color:var(--t60);margin-bottom:1.5rem">Receive exclusive market updates, new listings, and investment opportunities across all of our markets. No spam — just the intel that matters.</p>
-      <form id="emailSignup" onsubmit="handleSignup(event)" style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center">
-        <input type="email" placeholder="Your email address" required style="flex:1;min-width:250px;padding:.85rem 1.2rem;background:var(--bg);border:1px solid var(--t20);color:var(--cream);font-family:var(--sans);font-size:.9rem;border-radius:0">
+      <form id="emailSignup" style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center">
+        <input type="hidden" name="_subject" value="New Email Subscriber — PrentonRealty.com">
+        <input type="email" name="email" placeholder="Your email address" required style="flex:1;min-width:250px;padding:.85rem 1.2rem;background:var(--bg);border:1px solid var(--t20);color:var(--cream);font-family:var(--sans);font-size:.9rem;border-radius:0">
         <button type="submit" class="btn btn-gold">Subscribe</button>
       </form>
       <p id="signupStatus" style="font-size:.82rem;color:var(--gold);display:none;margin-top:.8rem"></p>
@@ -1985,23 +1983,49 @@ function observeReveals(){
 }
 observeReveals();
 
-function handleSubmit(e){
-  e.preventDefault();
-  const status=document.getElementById('formStatus');
-  status.textContent='Thank you! We\'ll be in touch within 24 hours.';
-  status.style.display='block';
-  e.target.reset();
-  setTimeout(()=>{status.style.display='none'},5000);
+/* Formspree form ID — replace xrernlon with your Formspree endpoint */
+const FORMSPREE_URL='https://formspree.io/f/xrernlon';
+
+function submitToFormspree(form,statusEl,successMsg,opts){
+  const fd=new FormData(form);
+  const btn=form.querySelector('button[type="submit"]');
+  const origText=btn.textContent;
+  btn.textContent='Sending...';btn.disabled=true;
+  fetch(FORMSPREE_URL,{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+  .then(r=>{
+    if(r.ok){
+      statusEl.textContent=successMsg;
+      statusEl.style.display='block';
+      form.reset();
+      btn.textContent=origText;btn.disabled=false;
+      if(opts&&opts.onSuccess) opts.onSuccess();
+      setTimeout(()=>{statusEl.style.display='none'},5000);
+    }else{
+      statusEl.textContent='Something went wrong — please email us at info@prentonrealty.com';
+      statusEl.style.display='block';
+      btn.textContent=origText;btn.disabled=false;
+    }
+  })
+  .catch(()=>{
+    statusEl.textContent='Connection error — please try again or email info@prentonrealty.com';
+    statusEl.style.display='block';
+    btn.textContent=origText;btn.disabled=false;
+  });
 }
 
-function handleSignup(e){
+$('#contactForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const status=document.getElementById('signupStatus');
-  status.textContent='Thank you! You\'ve been added to our mailing list.';
-  status.style.display='block';
-  e.target.reset();
-  setTimeout(()=>{status.style.display='none'},5000);
-}
+  const fd=new FormData(e.target);
+  fd.append('_subject','New Contact Form Inquiry — PrentonRealty.com');
+  submitToFormspree(e.target,document.getElementById('formStatus'),'Thank you! We\'ll be in touch within 24 hours.');
+});
+
+$('#emailSignup').addEventListener('submit',e=>{
+  e.preventDefault();
+  const fd=new FormData(e.target);
+  fd.append('_form_type','Email Subscription');
+  submitToFormspree(e.target,document.getElementById('signupStatus'),'Thank you! You\'ve been added to our mailing list.');
+});
 
 /* NDA Modal */
 function openNDA(){document.getElementById('ndaOverlay').classList.add('active')}
@@ -2009,14 +2033,12 @@ function closeNDA(){document.getElementById('ndaOverlay').classList.remove('acti
 document.getElementById('ndaOverlay').addEventListener('click',function(e){
   if(e.target===this) closeNDA();
 });
-function handleNDA(e){
+$('#ndaForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const status=document.getElementById('ndaStatus');
-  status.textContent='Your confidential inquiry has been received. Our team will contact you within 24 hours with a secure information package.';
-  status.style.display='block';
-  e.target.reset();
-  setTimeout(()=>{closeNDA();status.style.display='none'},4000);
-}
+  const fd=new FormData(e.target);
+  fd.append('_subject','CONFIDENTIAL NDA Inquiry — PrentonRealty.com');
+  submitToFormspree(e.target,document.getElementById('ndaStatus'),'Your confidential inquiry has been received. Our team will contact you within 24 hours with a secure information package.',{onSuccess:()=>setTimeout(()=>{closeNDA()},4000)});
+});
 
 /* Animated counters */
 function animateCounters(){
