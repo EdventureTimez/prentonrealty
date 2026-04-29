@@ -1954,7 +1954,7 @@ function go(page){
     observeReveals();
     animateCounters();
   },100);
-  history.pushState(null,null,'#'+page);
+  history.pushState(null,null,page==='home'?'/':'/'+page);
   /* Dynamic page title for SEO */
   const titles={
     home:'Prenton Realty — Commercial & Residential Real Estate Brokerage | Chicago, Naperville, Los Cabos',
@@ -2076,13 +2076,20 @@ function animateCounters(){
 }
 animateCounters();
 
-window.addEventListener('DOMContentLoaded',()=>{
+function getPageFromURL(){
+  const path=location.pathname.replace(/^\//,'').replace(/\/$/,'');
+  /* Support legacy hash links */
   const hash=location.hash.replace('#','');
-  if(hash&&document.getElementById('page-'+hash)){go(hash)}
+  if(hash&&document.getElementById('page-'+hash)){return hash}
+  return path||'home';
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  const page=getPageFromURL();
+  if(page&&document.getElementById('page-'+page)){go(page)}
 });
 window.addEventListener('popstate',()=>{
-  const hash=location.hash.replace('#','');
-  if(hash&&document.getElementById('page-'+hash)){go(hash)}
+  const page=getPageFromURL();
+  if(page&&document.getElementById('page-'+page)){go(page)}else{go('home')}
 });
 </script>
 
