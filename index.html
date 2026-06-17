@@ -598,6 +598,12 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
 .split-light .split-text p{color:var(--light-sub)!important}
 .split-light .split-text h2,.split-light .split-text h3{color:var(--light-text)!important}
 .split-light .eyebrow{color:var(--gold)!important}
+
+/* SPLIT-LIGHT SERVICE CARD FIX */
+.split-light .service-card{background:#fff!important;border:1px solid var(--light-border)!important;box-shadow:0 2px 24px rgba(11,24,41,.04)!important}
+.split-light .service-card h3,.split-light .service-card h4{color:var(--light-text)!important}
+.split-light .service-card p{color:var(--light-sub)!important}
+.split-light .services-grid{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
 </style>
 </head>
 <body>
@@ -1139,28 +1145,28 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
   </section>
 
   <!-- Full-Service International Closing -->
-  <section class="split split-light" style="border-top:1px solid var(--light-border)">
-    <div class="split-text" style="width:100%">
-      <div class="split-text-inner rv" style="max-width:900px;margin:0 auto">
-        <div class="eyebrow">Full-Service International Brokerage</div>
+  <section class="services-section section-light" style="border-top:1px solid var(--light-border);padding:5rem 0">
+    <div class="container">
+      <div class="services-header rv" style="text-align:center;margin-bottom:3rem">
+        <div class="eyebrow" style="justify-content:center">Full-Service International Brokerage</div>
         <h2>We Handle the Entire Closing Process</h2>
-        <p>Buying real estate in Mexico doesn't have to be complicated. Prenton Realty provides a full-service closing experience mirroring the standards you expect in the United States. We coordinate every detail — so you can focus on the investment, not the paperwork.</p>
-        <div class="services-grid" style="margin-top:2rem">
-          <div class="service-card rv">
-            <h3>Legal &amp; Notarial</h3>
-            <p>We connect you with trusted Mexican attorneys and notaries who specialize in foreign-national real estate transactions and fideicomiso (bank trust) structuring.</p>
-          </div>
-          <div class="service-card rv d1">
-            <h3>Appraisals &amp; Assessments</h3>
-            <p>Licensed appraisers, property assessors, and environmental inspections arranged to ensure you're making a fully informed acquisition.</p>
-          </div>
-          <div class="service-card rv d2">
-            <h3>Financing &amp; Structuring</h3>
-            <p>Guidance on cross-border financing options, 1031 exchange considerations, and tax-efficient ownership structures for U.S.-based buyers.</p>
-          </div>
-        </div>
-        <p style="margin-top:2rem;color:var(--t60)">From title search to key handover — Prenton Realty is your single point of contact throughout the entire transaction.</p>
+        <p style="max-width:680px;margin:1rem auto 0">Buying real estate in Mexico doesn’t have to be complicated. Prenton Realty provides a full-service closing experience mirroring the standards you expect in the United States. We coordinate every detail — so you can focus on the investment, not the paperwork.</p>
       </div>
+      <div class="services-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+        <div class="service-card rv">
+          <h3>Legal &amp; Notarial</h3>
+          <p>Coordination with Mexican notarios, title verification, and fideicomiso (bank trust) structuring required for foreign ownership in restricted zones.</p>
+        </div>
+        <div class="service-card rv d1">
+          <h3>Appraisals &amp; Assessments</h3>
+          <p>Independent property valuations, structural assessments, and environmental due diligence aligned with both Mexican and U.S. standards.</p>
+        </div>
+        <div class="service-card rv d2">
+          <h3>Financing &amp; Structuring</h3>
+          <p>Guidance on cross-border financing options, 1031 exchange considerations, and tax-efficient ownership structures for U.S.-based buyers.</p>
+        </div>
+      </div>
+      <p class="rv" style="text-align:center;margin-top:2.5rem;font-size:.92rem">From title search to key handover — Prenton Realty is your single point of contact throughout the entire transaction.</p>
     </div>
   </section>
 
