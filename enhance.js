@@ -8,7 +8,7 @@
 
   // 2) Inject Featured Listings into the Home page
   function inject() {
-    var home = document.getElementById('pg-home') || document.querySelector('[id^="pg-"]');
+    var home = document.getElementById('page-home') || document.querySelector('.page.active');
     if (!home || document.getElementById('featured-listings')) return;
 
     var sect = document.createElement('section');
