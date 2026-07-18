@@ -1,0 +1,42 @@
+/* Prenton Realty — nav fix + featured listings (loaded via enhance.js) */
+
+/* --- NAV: never let links collide with the logo --- */
+.nav-logo{flex-shrink:0;margin-right:26px}
+.nav-links{gap:15px;min-width:0}
+.nav-links a{white-space:nowrap}
+
+/* Extend the mobile drawer up to 1240px so mid-size screens never crowd */
+@media (max-width:1240px) and (min-width:1051px){
+  .nav-links{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:var(--bg);
+    flex-direction:column;justify-content:center;gap:2rem;padding:2rem;transition:right .35s}
+  .nav-links.open{right:0;box-shadow:rgba(0,0,0,.5) -8px 0 32px}
+  .hamburger{display:flex}
+}
+
+/* --- FEATURED LISTINGS --- */
+.feat-sect{padding:90px 0;background:var(--bg2,#0e2038)}
+.feat-wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+.feat-kicker{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold,#C5A55A);margin-bottom:12px}
+.feat-h2{font-family:var(--serif,Georgia,serif);font-weight:500;font-size:clamp(28px,4vw,42px);color:var(--cream,#F5F0E8);margin:0 0 8px}
+.feat-sub{color:rgba(245,240,232,.6);max-width:640px;margin:0 0 38px;font-weight:300}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:22px}
+.feat-card{display:block;background:rgba(245,240,232,.04);border:1px solid rgba(245,240,232,.1);
+  text-decoration:none;transition:transform .25s,border-color .25s;overflow:hidden}
+.feat-card:hover{transform:translateY(-4px);border-color:rgba(197,165,90,.5)}
+.feat-ph{height:190px;background-size:cover;background-position:center;position:relative}
+.feat-ph .tag{position:absolute;top:12px;left:12px;background:rgba(11,24,41,.85);color:var(--gold,#C5A55A);
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:6px 10px}
+.feat-ph.feat-office{display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#16334f,#0B1829 70%)}
+.feat-ph.feat-office span{font-family:var(--serif,Georgia,serif);font-size:26px;color:var(--gold,#C5A55A);text-align:center;line-height:1.2}
+.feat-body{padding:18px 18px 20px}
+.feat-body h3{font-family:var(--serif,Georgia,serif);font-weight:500;font-size:21px;color:var(--cream,#F5F0E8);margin:0 0 3px}
+.feat-body .loc{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.5);margin-bottom:10px}
+.feat-body .price{font-family:var(--serif,Georgia,serif);font-size:22px;color:var(--gold,#C5A55A)}
+.feat-body .cta{display:inline-block;margin-top:12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream,#F5F0E8);border-bottom:1px solid var(--gold,#C5A55A);padding-bottom:3px}
+.feat-past{margin-top:34px;padding-top:22px;border-top:1px solid rgba(245,240,232,.12);
+  color:rgba(245,240,232,.55);font-size:13.5px;line-height:1.8;font-weight:300}
+.feat-past b{color:rgba(245,240,232,.85);font-weight:500}
+.feat-past a{color:var(--gold,#C5A55A);text-decoration:none}
+@media (max-width:640px){.feat-wrap{padding:0 22px}.feat-sect{padding:64px 0}.feat-ph{height:170px}}
