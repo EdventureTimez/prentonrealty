@@ -6,6 +6,20 @@
   link.href = '/enhance.css';
   document.head.appendChild(link);
 
+  // 1b) Add the game to the nav so it's discoverable
+  function addNavLink() {
+    var nav = document.getElementById('navLinks');
+    if (!nav || nav.querySelector('a[href="/game/"]')) return;
+    var a = document.createElement('a');
+    a.href = '/game/';
+    a.textContent = 'How Much?!';
+    a.title = 'Play our Chicagoland price-guessing game';
+    var contact = nav.querySelector('a.nav-cta, a[class*="contact" i]');
+    nav.insertBefore(a, contact || null);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addNavLink);
+  else addNavLink();
+
   // 2) Inject Featured Listings into the Home page
   function inject() {
     var home = document.getElementById('page-home') || document.querySelector('.page.active');
