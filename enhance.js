@@ -92,6 +92,29 @@
     else home.appendChild(sect);
     sect.insertAdjacentElement('afterend', wg);
 
+    // --- Add J.P. Morgan advisor card next to the Morgan Stanley partner card ---
+    var msEl = Array.prototype.slice.call(home.querySelectorAll('h3,h4,b,strong,div')).filter(function (n) {
+      return n.children.length === 0 && /Morgan Stanley One Point Wealth Management/.test(n.textContent);
+    })[0];
+    if (msEl) {
+      var msCard = msEl.closest('div');
+      var hops = 0;
+      while (msCard && msCard.parentElement && msCard.parentElement.querySelectorAll(':scope > *').length === 1 && hops < 3) { msCard = msCard.parentElement; hops++; }
+      if (msCard && !document.getElementById('jpm-card')) {
+        var jpm = msCard.cloneNode(true);
+        jpm.id = 'jpm-card';
+        jpm.style.marginTop = '14px';
+        var walker = document.createTreeWalker(jpm, NodeFilter.SHOW_TEXT);
+        var tn;
+        while ((tn = walker.nextNode())) {
+          if (/Morgan Stanley One Point Wealth Management/.test(tn.textContent)) tn.textContent = 'J.P. Morgan Private Wealth Advisor';
+          else if (/Strategic Advisory Partner/.test(tn.textContent)) tn.textContent = 'Chicago, IL \u2014 Strategic Advisory Partner';
+        }
+        msCard.insertAdjacentElement('afterend', jpm);
+      }
+    }
+
+
     // Wire internal navigation buttons to the site's SPA router when available.
     sect.querySelectorAll('[data-go]').forEach(function (el) {
       el.addEventListener('click', function (ev) {
