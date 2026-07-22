@@ -79,7 +79,6 @@
       '</div>' +
       '<div class="wg-foot">However you prefer to work, the standard is the same \u2014 discretion, preparation, and advice we\u2019d give our own family. <a href="#" data-go="contact">Tell us how you\u2019d like to begin \u2192</a></div>' +
       '</div>';
-    sect.insertAdjacentElement('afterend', wg);
     wg.querySelectorAll('[data-go]').forEach(function (el) {
       el.addEventListener('click', function (ev) {
         var page = el.getAttribute('data-go');
@@ -91,6 +90,7 @@
     var sections = home.querySelectorAll('section');
     if (sections.length > 1) sections[1].insertAdjacentElement('beforebegin', sect);
     else home.appendChild(sect);
+    sect.insertAdjacentElement('afterend', wg);
 
     // Wire internal navigation buttons to the site's SPA router when available.
     sect.querySelectorAll('[data-go]').forEach(function (el) {
