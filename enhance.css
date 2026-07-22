@@ -40,3 +40,16 @@
 .feat-past b{color:rgba(245,240,232,.85);font-weight:500}
 .feat-past a{color:var(--gold,#C5A55A);text-decoration:none}
 @media (max-width:640px){.feat-wrap{padding:0 22px}.feat-sect{padding:64px 0}.feat-ph{height:170px}}
+
+/* --- White Glove section --- */
+.wg-sect { padding: 72px 24px; background: rgba(197,165,90,0.04); border-top: 1px solid rgba(197,165,90,0.18); border-bottom: 1px solid rgba(197,165,90,0.18); }
+.wg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+.wg-card { border: 1px solid rgba(245,240,232,0.12); border-radius: 10px; padding: 28px 24px; background: rgba(11,24,41,0.35); transition: border-color .25s, transform .25s; }
+.wg-card:hover { border-color: var(--gold, #C5A55A); transform: translateY(-3px); }
+.wg-icon { font-size: 26px; color: var(--gold, #C5A55A); margin-bottom: 12px; }
+.wg-card h3 { font-family: var(--serif, Georgia, serif); font-size: 22px; color: var(--cream, #F5F0E8); margin: 0 0 10px; }
+.wg-card p { font-size: 14.5px; line-height: 1.7; color: rgba(245,240,232,0.72); margin: 0; }
+.wg-foot { margin-top: 30px; font-size: 15px; color: rgba(245,240,232,0.8); line-height: 1.7; }
+.wg-foot a { color: var(--gold, #C5A55A); text-decoration: none; }
+.wg-foot a:hover { color: var(--gold-h, #d4b96e); }
+@media (max-width: 900px) { .wg-grid { grid-template-columns: 1fr; } }

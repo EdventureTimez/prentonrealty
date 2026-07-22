@@ -61,6 +61,32 @@
       'multifamily investment portfolio, Chicagoland — <a href="#" data-go="portfolio">see the full portfolio →</a></div>' +
       '</div>';
 
+    // --- White Glove service section ---
+    var wg = document.createElement('section');
+    wg.className = 'wg-sect';
+    wg.innerHTML =
+      '<div class="feat-wrap">' +
+      '<div class="feat-kicker">The Prenton Standard</div>' +
+      '<h2 class="feat-h2">White\u2011Glove, Calibrated to You</h2>' +
+      '<p class="feat-sub">No two clients search the same way \u2014 so we don\u2019t serve them the same way. At the start of every engagement we ask one question: how do you want to work? Then we build the service around your answer.</p>' +
+      '<div class="wg-grid">' +
+      '<div class="wg-card"><div class="wg-icon">\u2315</div><h3>You lead, we advise</h3>' +
+      '<p>You enjoy the hunt \u2014 browsing every listing, touring on weekends, forming your own shortlist. We stay at your side as counsel: pricing context, negotiation strategy, and an honest second opinion whenever you ask, with no pressure to move faster than you want to.</p></div>' +
+      '<div class="wg-card"><div class="wg-icon">\u2696</div><h3>We search together</h3>' +
+      '<p>A true partnership. We refine the brief, surface options you\u2019d never find on the portals, and vet everything before it reaches you \u2014 while you keep full visibility into the market and the final say at every step.</p></div>' +
+      '<div class="wg-card"><div class="wg-icon">\u2726</div><h3>We procure, you decide</h3>' +
+      '<p>For clients who value their time above all: tell us what the property needs to do for you, and we do the rest \u2014 sourcing, inspecting, and shortlisting to a single considered recommendation, presented with the case for and against. You simply choose.</p></div>' +
+      '</div>' +
+      '<div class="wg-foot">However you prefer to work, the standard is the same \u2014 discretion, preparation, and advice we\u2019d give our own family. <a href="#" data-go="contact">Tell us how you\u2019d like to begin \u2192</a></div>' +
+      '</div>';
+    sect.insertAdjacentElement('afterend', wg);
+    wg.querySelectorAll('[data-go]').forEach(function (el) {
+      el.addEventListener('click', function (ev) {
+        var page = el.getAttribute('data-go');
+        if (typeof window.go === 'function') { ev.preventDefault(); window.go(page); window.scrollTo(0, 0); }
+      });
+    });
+
     // Place it after the first full section on Home (below the hero), else append.
     var sections = home.querySelectorAll('section');
     if (sections.length > 1) sections[1].insertAdjacentElement('beforebegin', sect);
