@@ -96,11 +96,8 @@
     {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "International Luxury Real Estate", "description": "Ultra-luxury resort residences in Puerto Los Cabos, Mexico including 128 Founders and Ritz-Carlton Reserve at Zadún."}}
   ],
   "employee": [
-    {"@type": "Person", "name": "Paul Sanchez", "jobTitle": "Designated Managing Broker & Founder", "worksFor": {"@id": "https://prentonrealty.com/#organization"}},
-    {"@type": "Person", "name": "Edward Sanchez", "jobTitle": "Commercial Broker & Accredited Commercial Practitioner", "worksFor": {"@id": "https://prentonrealty.com/#organization"}},
-    {"@type": "Person", "name": "Claudia Sanchez", "jobTitle": "Director of Operations"},
-    {"@type": "Person", "name": "Basia Sawicka", "jobTitle": "Design Associate"},
-    {"@type": "Person", "name": "Isabela Sanchez", "jobTitle": "Marketing Associate"},
+    {"@type": "Person", "name": "Paul Sanchez", "jobTitle": "Co-Founder & Designated Managing Broker", "worksFor": {"@id": "https://prentonrealty.com/#organization"}},
+    {"@type": "Person", "name": "Edward Sanchez", "jobTitle": "Co-Founder & Commercial Broker", "worksFor": {"@id": "https://prentonrealty.com/#organization"}},
     {"@type": "Person", "name": "Gabriela Bertand", "jobTitle": "Residential Broker"},
     {"@type": "Person", "name": "Candice Bailey", "jobTitle": "Residential Broker"},
     {"@type": "Person", "name": "Joseph Santoro", "jobTitle": "Broker Associate"}
@@ -448,8 +445,8 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 @media(max-width:800px){.listings-grid{grid-template-columns:1fr;max-width:450px;margin:0 auto}}
 
 /* TEAM */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;padding:5rem 0}
-.team-grid-agents{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem;padding:0 0 5rem}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);max-width:800px;margin:0 auto;gap:2.5rem;padding:5rem 0}
+.team-grid-agents{display:grid;grid-template-columns:repeat(3,1fr);max-width:900px;margin:0 auto;gap:1.5rem;padding:0 0 5rem}
 .team-section-label{text-align:center;padding:2rem 0 0;margin-bottom:2rem;border-top:1px solid var(--t05)}
 .team-section-label h3{font-family:var(--serif);font-size:1.4rem;color:var(--cream);font-weight:400}
 .team-card{text-align:center}
@@ -1656,7 +1653,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <div class="team-card rv">
         <div class="team-photo" style="background:url('photos/Paul Sanchez — professional headshot.png') center/cover"></div>
         <h3>Paul Sanchez</h3>
-        <div class="team-title" style="color:var(--copper)">Designated Managing Broker &amp; Founder · REALTOR&reg;</div>
+        <div class="team-title" style="color:var(--copper)">Co-Founder &amp; Designated Managing Broker · REALTOR&reg;</div>
         <p>With over 25 years in Chicagoland real estate, Paul is one of the most experienced brokers in the western suburbs. He built Prenton Realty from a single-person residential practice into a multi-market brokerage spanning commercial, residential, and international real estate across five markets. His experience covers every market cycle of the past quarter century — from the post-9/11 slowdown through the 2008 financial crisis and into today's evolving landscape. Paul's deep industry relationships and hands-on approach to every client engagement remain the foundation the firm is built on.</p>
         <div class="team-contact-info">
           <a href="tel:6304600377">(630) 460-0377</a>
@@ -1664,20 +1661,10 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <span style="font-size:.68rem;color:var(--t40)">License #471015412</span>
         </div>
       </div>
-      <div class="team-card rv d1">
-        <div class="team-photo" style="background:url('photos/Claudia Sanchez — professional headshot.png') center/cover"></div>
-        <h3>Claudia Sanchez</h3>
-        <div class="team-title">Director of Operations</div>
-        <p>Claudia is the operational backbone of Prenton Realty. She oversees transaction management, client communications, compliance, and the systems that ensure every deal moves smoothly from listing to closing. With years of experience coordinating complex multi-party transactions across state lines, Claudia keeps timelines on track and ensures nothing falls through the cracks. Her attention to detail and commitment to client satisfaction make her invaluable to every engagement the firm takes on.</p>
-        <div class="team-contact-info">
-          <a href="tel:6308500112">(630) 850-0112</a>
-          <a href="mailto:Claudia@PrentonRealty.com">Claudia@PrentonRealty.com</a>
-        </div>
-      </div>
       <div class="team-card rv d2">
         <div class="team-photo" style="background:url('photos/Edward Sanchez — professional headshot.png') center/cover"></div>
         <h3>Edward Sanchez</h3>
-        <div class="team-title">Commercial Broker · Accredited Commercial Practitioner</div>
+        <div class="team-title">Co-Founder &amp; Commercial Broker · Accredited Commercial Practitioner</div>
         <p>Edward leads Prenton Realty's commercial division and international practice. A DePaul University graduate in Finance and Entrepreneurial Management, he brings capital markets experience from Fitch Ratings and Great Wolf Lodge to every client engagement. Edward heads LuxuryCabos.com and oversees the firm's Florida and Texas expansion. Fluent in English and Spanish.</p>
         <div class="team-contact-info">
           <a href="tel:3315881703">(331) 588-1703</a>
@@ -1693,26 +1680,6 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
     </div>
 
     <div class="team-grid-agents">
-      <div class="team-card team-card-sm rv">
-        <div class="team-photo" style="height:220px;background:url('photos/Basia Sawicka — professional headshot.png') center/cover"></div>
-        <h3>Basia Sawicka</h3>
-        <div class="team-title">Design Associate</div>
-        <p>Registered Associate with One Point Wealth Management Group and a DePaul University graduate in Finance &amp; Accounting. Basia bridges design expertise with financial acumen, helping clients visualize the potential in every property. Her background in staging, space planning, and investment analysis brings a unique perspective to the team. Bilingual in English and Polish, she serves a diverse clientele throughout the Chicagoland market.</p>
-        <div class="team-contact-info">
-          <a href="tel:8158145486">(815) 814-5486</a>
-          <a href="mailto:Basia@PrentonRealty.com">Basia@PrentonRealty.com</a>
-        </div>
-      </div>
-      <div class="team-card team-card-sm rv d1">
-        <div class="team-photo" style="height:220px;background:url('photos/Isabela Sanchez — professional headshot.png') center/cover"></div>
-        <h3>Isabela Sanchez</h3>
-        <div class="team-title">Marketing Associate</div>
-        <p>The creative force behind Prenton's brand strategy, digital campaigns, and community engagement. Isabela manages the firm's social media presence, property photography, listing content, and event coordination. She plays a key role in connecting with the local community and ensuring every property and market gets the visibility it deserves. Bilingual in English and Spanish.</p>
-        <div class="team-contact-info">
-          <a href="tel:6305503632">(630) 550-3632</a>
-          <a href="mailto:Isabela@PrentonRealty.com">Isabela@PrentonRealty.com</a>
-        </div>
-      </div>
       <div class="team-card team-card-sm rv d2">
         <div class="team-photo" style="height:220px;background:url('photos/Gabriela Bertand — professional headshot.png') center/cover"></div>
         <h3>Gabriela Bertand</h3>
