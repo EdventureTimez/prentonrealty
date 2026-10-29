@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Add to Calendar — Prenton Realty</title>
+<style>
+body{margin:0;background:#0B1829;color:#F5F0E8;font-family:'Outfit',system-ui,sans-serif;font-weight:300;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+.card{max-width:420px;width:100%;text-align:center;border:1px solid rgba(245,240,232,.1);padding:40px 28px;background:rgba(245,240,232,.03)}
+.brand{font-family:Georgia,serif;font-size:22px;letter-spacing:.02em;margin-bottom:26px}
+.brand b{color:#C5A55A;font-weight:500}
+h1{font-family:Georgia,serif;font-weight:500;font-size:24px;line-height:1.25;margin:0 0 6px}
+.when{color:rgba(245,240,232,.6);font-size:15px;margin-bottom:28px}
+.btn{display:block;margin:10px auto;max-width:300px;padding:14px 20px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;font-weight:500}
+.gold{background:#C5A55A;color:#1A1A2E}
+.line{border:1px solid rgba(245,240,232,.4);color:#F5F0E8}
+.hint{color:rgba(245,240,232,.45);font-size:12.5px;margin-top:22px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">Prenton<b>Realty</b></div>
+  <h1 id="t">Team event</h1>
+  <div class="when" id="w"></div>
+  <a class="btn gold" id="ics" href="#">Add to Apple / Outlook Calendar</a>
+  <a class="btn line" id="gcal" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+  <div class="hint">On iPhone, tap the gold button, then open the downloaded file and tap Add All. On a computer the invite opens straight into your calendar app.</div>
+</div>
+<script>
+(function(){
+var q=new URLSearchParams(location.search);
+var title=(q.get('t')||'Prenton team event').slice(0,200);
+var date=(q.get('d')||'').slice(0,10);
+var time=(q.get('tm')||'').slice(0,5);
+var loc=(q.get('l')||'').slice(0,200);
+if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){document.getElementById('t').textContent='This event link is missing its date.';return;}
+if(!/^\d{2}:\d{2}$/.test(time))time='';
+document.getElementById('t').textContent=title;
+var dp=date.split('-');
+var pretty=new Date(+dp[0],+dp[1]-1,+dp[2]).toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+document.getElementById('w').textContent=pretty+(time?' at '+time:'')+(loc?' · '+loc:'');
+function pad(n){return String(n).padStart(2,'0');}
+var ds=date.replace(/-/g,''),dtStart,dtEnd,gDates;
+if(time){
+  var hm=time.split(':');
+  dtStart=ds+'T'+hm[0]+hm[1]+'00';
+  var endH=(+hm[0]+1)%24;
+  dtEnd=ds+'T'+pad(endH)+hm[1]+'00';
+  gDates=dtStart+'/'+dtEnd;
+}else{
+  var d2=new Date(+dp[0],+dp[1]-1,+dp[2]+1);
+  var next=''+d2.getFullYear()+pad(d2.getMonth()+1)+pad(d2.getDate());
+  dtStart=ds;dtEnd=next;gDates=ds+'/'+next;
+}
+function esc(s){return s.replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');}
+var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Prenton Realty//Team Calendar//EN','BEGIN:VEVENT',
+ 'UID:'+ds+'-'+Math.random().toString(36).slice(2)+'@prentonrealty.com',
+ 'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),
+ time?('DTSTART:'+dtStart):('DTSTART;VALUE=DATE:'+dtStart),
+ time?('DTEND:'+dtEnd):('DTEND;VALUE=DATE:'+dtEnd),
+ 'SUMMARY:'+esc(title),
+ loc?('LOCATION:'+esc(loc)):null,
+ 'END:VEVENT','END:VCALENDAR'].filter(Boolean).join('\r\n');
+var blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+var url=URL.createObjectURL(blob);
+var a=document.getElementById('ics');
+a.href=url;a.download=title.replace(/[^\w\- ]/g,'').trim().replace(/ +/g,'-').toLowerCase()+'.ics';
+var g='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+encodeURIComponent(gDates)+(loc?'&location='+encodeURIComponent(loc):'');
+document.getElementById('gcal').href=g;
+})();
+</script>
+</body>
+</html>
