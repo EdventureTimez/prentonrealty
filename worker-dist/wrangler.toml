@@ -1,3 +1,4 @@
+# Prenton Sign worker deploy config (Cloudflare Workers Builds)
 name = "prenton-sign"
 main = "prenton-sign-worker.mjs"
 compatibility_date = "2025-09-01"
