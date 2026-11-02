@@ -1,0 +1,19 @@
+name = "prenton-sign"
+main = "prenton-sign-worker.mjs"
+compatibility_date = "2025-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "prenton-sign"
+database_id = "1c8ccefd-094f-4ae5-a69f-81fb976c2a0c"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "prenton-sign-files"
+
+[vars]
+APP_NAME = "Prenton Sign"
+COMPANY = "Prenton Realty"
+TIMEZONE = "America/Chicago"
+MAIL_FROM = ""
