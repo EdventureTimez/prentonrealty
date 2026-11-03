@@ -19683,7 +19683,16 @@ var __ASSETS = { "/index.html": { "ct": "text/html; charset=utf-8", "body": `<!d
   .canvas-area { overflow-y: auto; background: #e9e6df; position: relative; }
   .sect { margin-bottom: 22px; }
   .sect h4 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; font-weight: 600; }
-  .rec { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px; cursor: pointer; background: #fff; }
+  .rec { display: flex; flex-direction: column; gap: 7px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px; cursor: pointer; background: #fff; }
+  .recline { display: flex; align-items: center; gap: 10px; }
+  .recrole { display: flex; gap: 6px; }
+  .recrole .input.xs { flex: 1; padding: 4px 6px; font-size: 11.5px; height: auto; }
+  .recrole .input.xs:last-child { flex: 0 0 62px; }
+  .btn.xs { padding: 4px 9px; font-size: 11.5px; }
+  .tplbanner { background: color-mix(in srgb, var(--gold) 12%, #fff); border: 1px solid var(--gold); border-radius: 6px; padding: 9px 10px; font-size: 12.5px; margin-bottom: 10px; line-height: 1.5; }
+  .tpllist { display: grid; gap: 6px; max-height: 50vh; overflow-y: auto; }
+  .tplrow { text-align: left; border: 1px solid var(--line); border-radius: 6px; background: #fff; padding: 10px 12px; cursor: pointer; }
+  .tplrow:hover { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 6%, #fff); }
   .rec.active { border-color: var(--c); box-shadow: inset 3px 0 0 var(--c); background: color-mix(in srgb, var(--c) 7%, #fff); }
   .rec .sw { width: 12px; height: 12px; border-radius: 50%; background: var(--c); flex: none; }
   .rec .nm { font-weight: 600; font-size: 13px; line-height: 1.2; }
@@ -19736,7 +19745,7 @@ var __ASSETS = { "/index.html": { "ct": "text/html; charset=utf-8", "body": `<!d
 
 <script>
 (() => {
-const { api, toast, modal, esc, copy, fmt, FIELD_META, COLORS, renderPdf, initialsOf } = PS;
+const { api, toast, modal, esc, copy, fmt, FIELD_META, COLORS, renderPdf, initialsOf, inspectPdf, ROLE_OPTIONS } = PS;
 const app = document.getElementById('app');
 let ME = { email: false };
 
@@ -19878,9 +19887,9 @@ async function viewEditor(id) {
     title: data.envelope.title,
     message: data.envelope.message || '',
     sequential: !!data.envelope.sequential,
-    recipients: data.recipients.map((r) => ({ key: r.id, id: r.id, name: r.name, email: r.email, color: r.color, sign_order: r.sign_order })),
-    fields: data.fields.map((f) => ({ key: f.id, recipient_key: f.recipient_id, type: f.type, page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, required: !!f.required, label: f.label || '' })),
-    active: null, sel: null, armed: null, sizes: [],
+    recipients: data.recipients.map((r) => ({ key: r.id, id: r.id, name: r.name, email: r.email, color: r.color, sign_order: r.sign_order, role: r.role || '', slot: r.slot || 1 })),
+    fields: data.fields.map((f) => ({ key: f.id, recipient_key: f.recipient_id, type: f.type, page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, required: !!f.required, label: f.label || '', source: f.source || '' })),
+    active: null, sel: null, armed: null, sizes: [], doc: null,
   };
   S.active = S.recipients[0]?.key || null;
   let k = 0;
@@ -19908,6 +19917,16 @@ async function viewEditor(id) {
         <h4>Fields for <span id="actname"></span></h4>
         <div class="palette" id="palette"></div>
         <p class="hint" style="margin-top:10px">Drag a field onto the page, or click a field then click where it goes. Select a field to move, resize or delete it.</p>
+      </div>
+      <div class="sect">
+        <h4>Forms &amp; templates</h4>
+        <div id="tplmatch"></div>
+        <div style="display:grid;gap:8px">
+          <button class="btn gold sm" id="applytpl">Apply a saved form layout</button>
+          <button class="btn sm" id="savetpl">Save this layout as a template</button>
+          <button class="btn danger sm" id="undotpl" style="display:none">Remove auto-placed fields</button>
+        </div>
+        <p class="hint" style="margin-top:8px">Set each signer's role above, then apply a saved form to drop every field in the right place for only the people signing.</p>
       </div>
     </aside>
     <main class="canvas-area"><div class="pages" id="pages"><p class="muted">Loading document\u2026</p></div></main>
@@ -19940,8 +19959,8 @@ async function viewEditor(id) {
     dirty = false;
     const body = {
       title: S.title, message: S.message, sequential: S.sequential,
-      recipients: S.recipients.map((r, i) => ({ id: r.id, key: r.key, name: r.name, email: r.email, color: r.color, sign_order: S.sequential ? i + 1 : 1 })),
-      fields: S.fields.map((f) => ({ recipient_key: f.recipient_key, type: f.type, page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, required: f.required, label: f.label })),
+      recipients: S.recipients.map((r, i) => ({ id: r.id, key: r.key, name: r.name, email: r.email, color: r.color, sign_order: S.sequential ? i + 1 : 1, role: r.role || '', slot: r.slot || 1 })),
+      fields: S.fields.map((f) => ({ recipient_key: f.recipient_key, type: f.type, page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, required: f.required, label: f.label, source: f.source || '' })),
     };
     saving = saving.then(() => api('/api/envelopes/' + id, { method: 'PUT', body }))
       .then(() => { if (!dirty) saves.textContent = 'All changes saved'; })
@@ -19956,13 +19975,26 @@ async function viewEditor(id) {
     const box = document.getElementById('recs');
     box.innerHTML = S.recipients.length ? S.recipients.map((r, i) => \`
       <div class="rec \${r.key === S.active ? 'active' : ''}" data-k="\${r.key}" style="--c:\${esc(r.color)}" title="Click to place fields for \${esc(r.name)}">
-        \${S.sequential ? \`<span class="ord">\${i + 1}</span>\` : ''}
-        <span class="sw"></span>
-        <div style="min-width:0"><div class="nm">\${esc(r.name)}</div><div class="em">\${esc(r.email || 'No email')}</div></div>
-        \${S.sequential && i > 0 ? \`<button class="x" data-up="\${r.key}" title="Move up">\u2191</button>\` : ''}
-        <button class="x" data-del="\${r.key}" title="Remove signer">\xD7</button>
+        <div class="recline">
+          \${S.sequential ? \`<span class="ord">\${i + 1}</span>\` : ''}
+          <span class="sw"></span>
+          <div style="min-width:0;flex:1"><div class="nm">\${esc(r.name)}</div><div class="em">\${esc(r.email || 'No email')}</div></div>
+          \${S.sequential && i > 0 ? \`<button class="x" data-up="\${r.key}" title="Move up">\u2191</button>\` : ''}
+          <button class="x" data-del="\${r.key}" title="Remove signer">\xD7</button>
+        </div>
+        <div class="recrole">
+          <select class="input xs" data-role="\${r.key}" title="Signer role (used to place template fields for the right person)">
+            \${ROLE_OPTIONS.map((o) => \`<option value="\${o.v}" \${o.v === (r.role || '') ? 'selected' : ''}>\${o.t}</option>\`).join('')}
+          </select>
+          <select class="input xs" data-slot="\${r.key}" title="Which one, when a form has spaces for more than one of this role">
+            \${[1, 2, 3, 4].map((n) => \`<option value="\${n}" \${n === (r.slot || 1) ? 'selected' : ''}>#\${n}</option>\`).join('')}
+          </select>
+        </div>
       </div>\`).join('') : '<p class="hint">Add each person who needs to sign.</p>';
+    box.querySelectorAll('[data-role]').forEach((s) => { s.onpointerdown = (e) => e.stopPropagation(); s.onchange = (e) => { const r = recByKey(s.dataset.role); if (r) { r.role = e.target.value; save(); } }; });
+    box.querySelectorAll('[data-slot]').forEach((s) => { s.onpointerdown = (e) => e.stopPropagation(); s.onchange = (e) => { const r = recByKey(s.dataset.slot); if (r) { r.slot = Number(e.target.value) || 1; save(); } }; });
     box.querySelectorAll('.rec').forEach((el) => (el.onclick = (e) => {
+      if (e.target.dataset.role !== undefined || e.target.dataset.slot !== undefined) return;
       if (e.target.dataset.del) {
         const r = recByKey(e.target.dataset.del);
         const n = S.fields.filter((f) => f.recipient_key === r.key).length;
@@ -20153,9 +20185,89 @@ async function viewEditor(id) {
     });
     S.sizes = sizes;
     renderFields();
+    inspectPdf('/api/envelopes/' + id + '/pdf').then((doc) => { S.doc = doc; maybeSuggest(); }).catch(() => {});
   } catch (e) {
     pagesEl.innerHTML = \`<div class="card pad"><h3>Could not display this PDF</h3><p class="muted">\${esc(e.message)}</p></div>\`;
   }
+
+  /* ---- forms & templates ---- */
+  const hasTplFields = () => S.fields.some((f) => String(f.source || '').startsWith('template:'));
+  const updateTplButtons = () => { document.getElementById('undotpl').style.display = hasTplFields() ? '' : 'none'; };
+
+  const applyServerState = (d) => {
+    S.recipients = d.recipients.map((r) => ({ key: r.id, id: r.id, name: r.name, email: r.email, color: r.color, sign_order: r.sign_order, role: r.role || '', slot: r.slot || 1 }));
+    S.fields = d.fields.map((f) => ({ key: f.id, recipient_key: f.recipient_id, type: f.type, page: f.page, x: f.x, y: f.y, w: f.w, h: f.h, required: !!f.required, label: f.label || '', source: f.source || '' }));
+    if (!S.recipients.find((r) => r.key === S.active)) S.active = S.recipients[0]?.key || null;
+    S.sel = null; renderAll(); renderFields(); updateTplButtons();
+  };
+
+  const applyTemplateById = async (tid) => {
+    if (!S.recipients.length) return toast('Add your signers and set their roles first.', true);
+    await flush();
+    const d = await api('/api/envelopes/' + id + '/apply-template', { method: 'POST', body: { template_id: tid } });
+    applyServerState(d);
+    const info = d.apply || {};
+    let msg = \`Placed \${info.placed || 0} field(s) from "\${esc(info.template || 'template')}".\`;
+    if (info.unfilled_slots && info.unfilled_slots.length) msg += \`<br><span class="muted">Unused slots left empty: \${info.unfilled_slots.map(esc).join(', ')}.</span>\`;
+    if (info.warnings && info.warnings.length) msg += \`<br><span style="color:#b5566a">\${info.warnings.map(esc).join('<br>')}</span>\`;
+    modal({ title: 'Form layout applied', html: \`<p>\${msg}</p><p class="hint">Review the placements, then adjust anything by hand. Re-applying never duplicates fields.</p>\`, buttons: [{ label: 'Done', cls: 'gold' }] });
+  };
+
+  const openApply = async () => {
+    const { templates } = await api('/api/templates');
+    if (!templates.length) return modal({ title: 'No saved forms yet', html: '<p class="muted">Place the fields for a form once, set each signer\u2019s role, then use "Save this layout as a template". After that you can apply it to any matching document in one click.</p>', buttons: [{ label: 'Got it' }] });
+    const rows = (flt) => templates.filter((t) => (t.name + ' ' + (t.version || '')).toLowerCase().includes(flt.toLowerCase()))
+      .map((t) => \`<button class="tplrow" data-t="\${t.id}"><div><b>\${esc(t.name)}</b>\${t.version ? \` <span class="muted">v\${esc(t.version)}</span>\` : ''}</div><div class="muted" style="font-size:12px">\${t.field_count} fields \xB7 \${t.page_count || '?'} pages</div></button>\`).join('') || '<p class="hint">No forms match that search.</p>';
+    modal({
+      title: 'Apply a saved form layout', wide: true,
+      html: \`<input class="input" id="tplq" placeholder="Search forms\u2026" style="margin-bottom:10px"><div id="tpllist" class="tpllist">\${rows('')}</div>\`,
+      buttons: [{ label: 'Close' }],
+      onOpen: (el) => {
+        const list = el.querySelector('#tpllist');
+        el.querySelector('#tplq').oninput = (e) => { list.innerHTML = rows(e.target.value); bind(); };
+        const bind = () => list.querySelectorAll('.tplrow').forEach((b) => (b.onclick = () => { el.remove(); applyTemplateById(b.dataset.t); }));
+        bind();
+      },
+    });
+  };
+
+  const openSave = () => {
+    if (!S.fields.length) return toast('Place at least one field first.', true);
+    const unroled = S.recipients.filter((r) => !r.role).length;
+    modal({
+      title: 'Save this layout as a template',
+      html: \`<label class="field-label">Form name</label><input class="input" id="tn" value="\${esc(S.title)}">
+        <label class="field-label" style="margin-top:10px">Revision / version <span class="muted">(optional)</span></label><input class="input" id="tv" placeholder="e.g. 2024 rev">
+        \${unroled ? \`<p class="hint" style="margin-top:10px;color:#b5566a">\${unroled} signer(s) have no role set. Give every signer a role (Seller, Buyer, etc.) so the template knows who each field belongs to.</p>\` : '<p class="hint" style="margin-top:10px">Saved with each field tied to a signer role, so applying it later fills only the people on that transaction.</p>'}\`,
+      buttons: [{ label: 'Cancel' }, { label: 'Save template', cls: 'gold', onClick: async (close) => {
+        const name = document.getElementById('tn').value.trim();
+        await flush();
+        const body = { envelope_id: id, name, version: document.getElementById('tv').value.trim(), fingerprint: S.doc?.fingerprint || '', page_w: S.doc?.sizes?.[0]?.w || 0, page_h: S.doc?.sizes?.[0]?.h || 0, anchors: [] };
+        const res = await api('/api/templates', { method: 'POST', body });
+        toast(\`Saved "\${res.name}" with \${res.fields} fields\`);
+        close();
+      } }],
+    });
+  };
+
+  const maybeSuggest = async () => {
+    const box = document.getElementById('tplmatch');
+    if (!box || !S.doc || hasTplFields()) return;
+    try {
+      const { best } = await api('/api/templates/match', { method: 'POST', body: { fingerprint: S.doc.fingerprint, page_count: S.doc.pageCount, page_w: S.doc.sizes?.[0]?.w, page_h: S.doc.sizes?.[0]?.h } });
+      if (best) box.innerHTML = \`<div class="tplbanner">This looks like <b>\${esc(best.name)}</b>. <button class="btn gold xs" id="tplapplybest">Apply its layout</button></div>\`;
+      const b = document.getElementById('tplapplybest'); if (b) b.onclick = () => applyTemplateById(best.id);
+    } catch (e) {}
+  };
+
+  document.getElementById('applytpl').onclick = openApply;
+  document.getElementById('savetpl').onclick = openSave;
+  document.getElementById('undotpl').onclick = async () => {
+    await flush();
+    const d = await api('/api/envelopes/' + id + '/apply-template', { method: 'POST', body: { clear: true } });
+    applyServerState(d); toast('Auto-placed fields removed');
+  };
+  updateTplButtons();
 
   document.getElementById('delbtn').onclick = () => modal({
     title: 'Discard this draft?', html: '<p class="muted">The uploaded document and any fields you placed will be deleted.</p>',
@@ -20726,7 +20838,7 @@ load();
 <\/script>
 </body>
 </html>
-` }, "/common.js": { "ct": "text/javascript; charset=utf-8", "body": "// Shared helpers for Prenton Sign pages\n(function () {\n  const PS = (window.PS = {});\n\n  PS.FIELD_META = {\n    signature: { label: 'Signature', icon: '\u270D', w: 170, h: 42 },\n    initials: { label: 'Initials', icon: '\u24BE', w: 64, h: 36 },\n    date: { label: 'Date Signed', icon: '\u{1F4C5}', w: 110, h: 22 },\n    name: { label: 'Full Name', icon: '\u{1F464}', w: 170, h: 22 },\n    email: { label: 'Email', icon: '\u2709', w: 190, h: 22 },\n    text: { label: 'Text', icon: 'T', w: 170, h: 22 },\n    checkbox: { label: 'Checkbox', icon: '\u2610', w: 16, h: 16 },\n  };\n  PS.COLORS = ['#C9A45C', '#4F7CAC', '#5B9A68', '#B5566A', '#7E62B0', '#D07A3A', '#3E8E9A', '#8C6B4F'];\n\n  PS.esc = (s) => String(s == null ? '' : s).replace(/[&<>\"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]));\n\n  PS.api = async function (path, opts = {}) {\n    const o = { credentials: 'same-origin', ...opts, headers: { ...(opts.headers || {}) } };\n    if (o.body && !(o.body instanceof FormData) && typeof o.body !== 'string') {\n      o.body = JSON.stringify(o.body);\n      o.headers['content-type'] = 'application/json';\n    }\n    const res = await fetch(path, o);\n    let data = null;\n    try { data = await res.json(); } catch (e) { data = {}; }\n    if (!res.ok) {\n      const err = new Error((data && data.error) || `Request failed (${res.status})`);\n      err.status = res.status;\n      throw err;\n    }\n    return data;\n  };\n\n  let toastTimer;\n  PS.toast = function (msg, isErr) {\n    let t = document.getElementById('toast');\n    if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }\n    t.textContent = msg;\n    t.className = 'show' + (isErr ? ' err' : '');\n    clearTimeout(toastTimer);\n    toastTimer = setTimeout(() => (t.className = ''), isErr ? 5000 : 2600);\n  };\n\n  // modal({title, html, buttons:[{label, cls, onClick(close) -> bool|Promise}], onOpen(el), dismissable})\n  PS.modal = function ({ title, html, buttons = [], onOpen, dismissable = true, wide }) {\n    const back = document.createElement('div');\n    back.className = 'modal-back';\n    back.innerHTML = `<div class=\"modal\" role=\"dialog\" aria-modal=\"true\" ${wide ? 'style=\"max-width:820px\"' : ''}>\n      ${title ? `<header><h2 style=\"margin:0\">${title}</h2></header>` : ''}\n      <div class=\"body\">${html || ''}</div>\n      ${buttons.length ? '<footer></footer>' : ''}\n    </div>`;\n    const close = () => { back.remove(); document.removeEventListener('keydown', onKey); };\n    const onKey = (e) => { if (e.key === 'Escape' && dismissable) close(); };\n    document.addEventListener('keydown', onKey);\n    if (dismissable) back.addEventListener('mousedown', (e) => { if (e.target === back) close(); });\n    const footer = back.querySelector('footer');\n    buttons.forEach((b) => {\n      const btn = document.createElement('button');\n      btn.className = 'btn ' + (b.cls || '');\n      btn.textContent = b.label;\n      btn.onclick = async () => {\n        if (!b.onClick) return close();\n        btn.disabled = true;\n        try { const keep = await b.onClick(close, back); if (keep !== true) close(); }\n        catch (e) { PS.toast(e.message, true); }\n        finally { btn.disabled = false; }\n      };\n      footer.appendChild(btn);\n    });\n    document.body.appendChild(back);\n    if (onOpen) onOpen(back);\n    return { el: back, close };\n  };\n\n  PS.copy = async function (text) {\n    try { await navigator.clipboard.writeText(text); PS.toast('Copied'); }\n    catch (e) {\n      const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();\n      try { document.execCommand('copy'); PS.toast('Copied'); } catch (_) { PS.toast('Copy failed, select and copy manually', true); }\n      ta.remove();\n    }\n  };\n\n  PS.fmt = function (iso) {\n    if (!iso) return '';\n    const d = new Date(iso);\n    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });\n  };\n\n  // Render every page of a PDF into `container`. Calls onPage(pageNumber, pageEl, layerEl, {w,h}) for each.\n  PS.renderPdf = async function (url, container, onPage) {\n    const pdfjsLib = window.pdfjsLib;\n    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';\n    const doc = await pdfjsLib.getDocument({ url, withCredentials: true }).promise;\n    container.innerHTML = '';\n    const sizes = [];\n    const els = [];\n    for (let i = 1; i <= doc.numPages; i++) {\n      const page = await doc.getPage(i);\n      const vp1 = page.getViewport({ scale: 1 });\n      sizes.push({ w: vp1.width, h: vp1.height });\n      const el = document.createElement('div');\n      el.className = 'page';\n      el.dataset.page = i;\n      el.style.aspectRatio = `${vp1.width} / ${vp1.height}`;\n      el.innerHTML = `<canvas></canvas><div class=\"layer\"></div><div class=\"pnum\">Page ${i} of ${doc.numPages}</div>`;\n      container.appendChild(el);\n      els.push({ el, page, vp1 });\n    }\n    // draw canvases after layout so widths are known\n    for (let i = 0; i < els.length; i++) {\n      const { el, page, vp1 } = els[i];\n      const cssW = el.clientWidth || 800;\n      const scale = Math.min(2.5, (cssW * Math.min(2, window.devicePixelRatio || 1)) / vp1.width);\n      const vp = page.getViewport({ scale });\n      const canvas = el.querySelector('canvas');\n      canvas.width = Math.floor(vp.width);\n      canvas.height = Math.floor(vp.height);\n      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;\n      if (onPage) onPage(i + 1, el, el.querySelector('.layer'), sizes[i]);\n    }\n    return { numPages: doc.numPages, sizes };\n  };\n\n  PS.initialsOf = (name) => String(name || '').trim().split(/\\s+/).filter(Boolean).map((p) => p[0].toUpperCase()).join('').slice(0, 4);\n})();\n" }, "/app.css": { "ct": "text/css; charset=utf-8", "body": ":root {\n  --navy: #13203b;\n  --navy-2: #1d2d50;\n  --gold: #b8945a;\n  --gold-2: #d4b47c;\n  --ink: #1b2233;\n  --muted: #6b7180;\n  --line: #e4e1da;\n  --paper: #f6f4ef;\n  --white: #ffffff;\n  --ok: #3f7d55;\n  --warn: #b7791f;\n  --bad: #a3404f;\n  --radius: 6px;\n  --shadow: 0 1px 2px rgba(19,32,59,.06), 0 8px 24px rgba(19,32,59,.08);\n}\n* { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;\n  color: var(--ink); background: var(--paper); font-size: 14px; line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2, h3, .serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; color: var(--navy); }\nh1 { font-size: 34px; margin: 0 0 4px; letter-spacing: .2px; }\nh2 { font-size: 24px; margin: 0 0 12px; }\nh3 { font-size: 19px; margin: 0 0 8px; }\na { color: var(--navy); }\nbutton, input, select, textarea { font: inherit; color: inherit; }\n.hidden { display: none !important; }\n\n/* top bar */\n.topbar {\n  position: sticky; top: 0; z-index: 50; background: var(--navy); color: #fff;\n  display: flex; align-items: center; gap: 16px; padding: 0 20px; height: 60px;\n  border-bottom: 2px solid var(--gold);\n}\n.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; white-space: nowrap; }\n.brand .mark { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: .5px; }\n.brand .sub { font-size: 10px; letter-spacing: 3px; color: var(--gold-2); text-transform: uppercase; }\n.topbar .spacer { flex: 1; }\n.topbar .doc-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }\n\n/* buttons */\n.btn {\n  display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n  border: 1px solid var(--line); background: var(--white); color: var(--navy);\n  padding: 9px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 13px;\n  text-decoration: none; white-space: nowrap; transition: background .15s, border-color .15s, transform .05s;\n}\n.btn:hover { border-color: var(--navy); }\n.btn:active { transform: translateY(1px); }\n.btn:disabled { opacity: .5; cursor: not-allowed; }\n.btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }\n.btn.primary:hover { background: var(--navy-2); }\n.btn.gold { background: var(--gold); border-color: var(--gold); color: #fff; }\n.btn.gold:hover { background: #a7834b; }\n.btn.ghost { background: transparent; border-color: rgba(255,255,255,.35); color: #fff; }\n.btn.ghost:hover { border-color: #fff; }\n.btn.danger { color: var(--bad); }\n.btn.danger:hover { border-color: var(--bad); }\n.btn.sm { padding: 6px 10px; font-size: 12px; }\n.btn.link { border: none; background: none; padding: 4px 6px; color: var(--navy); text-decoration: underline; }\n\n/* layout */\n.wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 80px; }\n.card { background: var(--white); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }\n.pad { padding: 24px; }\n.eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; }\n.muted { color: var(--muted); }\n.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }\n.field-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin: 0 0 6px; letter-spacing: .3px; }\n.input, select.input, textarea.input {\n  width: 100%; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; background: #fff;\n  outline: none; transition: border-color .15s, box-shadow .15s;\n}\n.input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,148,90,.18); }\ntextarea.input { resize: vertical; min-height: 70px; }\n\n/* status pills */\n.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; letter-spacing: .3px; text-transform: uppercase; }\n.pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }\n.pill.draft { background: #eef0f4; color: #5b6272; }\n.pill.sent { background: #fdf3e2; color: var(--warn); }\n.pill.completed { background: #e6f2ea; color: var(--ok); }\n.pill.voided, .pill.declined { background: #f8e8eb; color: var(--bad); }\n.pill.viewed { background: #e8eefa; color: #3e5f9e; }\n.pill.pending { background: #eef0f4; color: #5b6272; }\n\n/* modal */\n.modal-back { position: fixed; inset: 0; background: rgba(19,32,59,.55); z-index: 200; display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px; overflow: auto; }\n.modal { background: #fff; border-radius: 10px; width: 100%; max-width: 620px; box-shadow: 0 20px 60px rgba(0,0,0,.25); border-top: 4px solid var(--gold); }\n.modal header { padding: 22px 26px 6px; }\n.modal .body { padding: 8px 26px 20px; }\n.modal footer { padding: 14px 26px 22px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }\n\n/* toast */\n#toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 11px 18px; border-radius: 6px; z-index: 400; font-size: 13px; box-shadow: var(--shadow); border-left: 3px solid var(--gold); opacity: 0; pointer-events: none; transition: opacity .2s; max-width: 90vw; }\n#toast.show { opacity: 1; }\n#toast.err { border-left-color: #e57a8a; }\n\n/* pdf pages */\n.pages { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px 12px 120px; }\n.page { position: relative; width: 100%; max-width: 860px; background: #fff; box-shadow: 0 2px 10px rgba(19,32,59,.15); }\n.page canvas { display: block; width: 100%; height: auto; }\n.page .layer { position: absolute; inset: 0; }\n.page .pnum { position: absolute; right: -2px; bottom: -20px; font-size: 11px; color: var(--muted); }\n\n/* placed fields */\n.f {\n  position: absolute; border: 1.5px solid var(--c, var(--gold)); border-radius: 3px;\n  background: color-mix(in srgb, var(--c, var(--gold)) 22%, transparent);\n  display: flex; align-items: center; justify-content: center; overflow: hidden;\n  font-size: 11px; font-weight: 600; color: var(--navy); user-select: none; -webkit-user-select: none;\n  touch-action: none; line-height: 1.1; text-align: center;\n}\n.f .flabel { pointer-events: none; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }\n.f img { max-width: 100%; max-height: 100%; pointer-events: none; }\n.f .fval { pointer-events: none; font-weight: 500; font-size: clamp(8px, 1.4vw, 13px); color: #142357; white-space: nowrap; overflow: hidden; padding: 0 3px; width: 100%; text-align: left; }\n.f .req { position: absolute; top: 0; right: 2px; color: var(--bad); font-size: 12px; }\n\n.brand .brandlogo { width: 34px; height: 34px; border-radius: 8px; display: block; box-shadow: 0 0 0 1px rgba(201,164,92,.45); }\n" } };
+` }, "/common.js": { "ct": "text/javascript; charset=utf-8", "body": "// Shared helpers for Prenton Sign pages\n(function () {\n  const PS = (window.PS = {});\n\n  // Default sizes in PDF points (scale-1). Sized to sit on a typical contract signature line\n  // without covering nearby text; each remains freely resizable in the editor.\n  PS.FIELD_META = {\n    signature: { label: 'Signature', icon: '\u270D', w: 150, h: 28 },\n    initials: { label: 'Initials', icon: '\u24BE', w: 44, h: 26 },\n    date: { label: 'Date Signed', icon: '\u{1F4C5}', w: 92, h: 18 },\n    name: { label: 'Full Name', icon: '\u{1F464}', w: 150, h: 18 },\n    email: { label: 'Email', icon: '\u2709', w: 170, h: 18 },\n    text: { label: 'Text', icon: 'T', w: 140, h: 18 },\n    checkbox: { label: 'Checkbox', icon: '\u2610', w: 14, h: 14 },\n  };\n  PS.COLORS = ['#C9A45C', '#4F7CAC', '#5B9A68', '#B5566A', '#7E62B0', '#D07A3A', '#3E8E9A', '#8C6B4F'];\n\n  PS.esc = (s) => String(s == null ? '' : s).replace(/[&<>\"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]));\n\n  PS.api = async function (path, opts = {}) {\n    const o = { credentials: 'same-origin', ...opts, headers: { ...(opts.headers || {}) } };\n    if (o.body && !(o.body instanceof FormData) && typeof o.body !== 'string') {\n      o.body = JSON.stringify(o.body);\n      o.headers['content-type'] = 'application/json';\n    }\n    const res = await fetch(path, o);\n    let data = null;\n    try { data = await res.json(); } catch (e) { data = {}; }\n    if (!res.ok) {\n      const err = new Error((data && data.error) || `Request failed (${res.status})`);\n      err.status = res.status;\n      throw err;\n    }\n    return data;\n  };\n\n  let toastTimer;\n  PS.toast = function (msg, isErr) {\n    let t = document.getElementById('toast');\n    if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }\n    t.textContent = msg;\n    t.className = 'show' + (isErr ? ' err' : '');\n    clearTimeout(toastTimer);\n    toastTimer = setTimeout(() => (t.className = ''), isErr ? 5000 : 2600);\n  };\n\n  // modal({title, html, buttons:[{label, cls, onClick(close) -> bool|Promise}], onOpen(el), dismissable})\n  PS.modal = function ({ title, html, buttons = [], onOpen, dismissable = true, wide }) {\n    const back = document.createElement('div');\n    back.className = 'modal-back';\n    back.innerHTML = `<div class=\"modal\" role=\"dialog\" aria-modal=\"true\" ${wide ? 'style=\"max-width:820px\"' : ''}>\n      ${title ? `<header><h2 style=\"margin:0\">${title}</h2></header>` : ''}\n      <div class=\"body\">${html || ''}</div>\n      ${buttons.length ? '<footer></footer>' : ''}\n    </div>`;\n    const close = () => { back.remove(); document.removeEventListener('keydown', onKey); };\n    const onKey = (e) => { if (e.key === 'Escape' && dismissable) close(); };\n    document.addEventListener('keydown', onKey);\n    if (dismissable) back.addEventListener('mousedown', (e) => { if (e.target === back) close(); });\n    const footer = back.querySelector('footer');\n    buttons.forEach((b) => {\n      const btn = document.createElement('button');\n      btn.className = 'btn ' + (b.cls || '');\n      btn.textContent = b.label;\n      btn.onclick = async () => {\n        if (!b.onClick) return close();\n        btn.disabled = true;\n        try { const keep = await b.onClick(close, back); if (keep !== true) close(); }\n        catch (e) { PS.toast(e.message, true); }\n        finally { btn.disabled = false; }\n      };\n      footer.appendChild(btn);\n    });\n    document.body.appendChild(back);\n    if (onOpen) onOpen(back);\n    return { el: back, close };\n  };\n\n  PS.copy = async function (text) {\n    try { await navigator.clipboard.writeText(text); PS.toast('Copied'); }\n    catch (e) {\n      const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();\n      try { document.execCommand('copy'); PS.toast('Copied'); } catch (_) { PS.toast('Copy failed, select and copy manually', true); }\n      ta.remove();\n    }\n  };\n\n  PS.fmt = function (iso) {\n    if (!iso) return '';\n    const d = new Date(iso);\n    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });\n  };\n\n  // Render every page of a PDF into `container`. Calls onPage(pageNumber, pageEl, layerEl, {w,h}) for each.\n  PS.renderPdf = async function (url, container, onPage) {\n    const pdfjsLib = window.pdfjsLib;\n    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';\n    const doc = await pdfjsLib.getDocument({ url, withCredentials: true }).promise;\n    container.innerHTML = '';\n    const sizes = [];\n    const els = [];\n    for (let i = 1; i <= doc.numPages; i++) {\n      const page = await doc.getPage(i);\n      const vp1 = page.getViewport({ scale: 1 });\n      sizes.push({ w: vp1.width, h: vp1.height });\n      const el = document.createElement('div');\n      el.className = 'page';\n      el.dataset.page = i;\n      el.style.aspectRatio = `${vp1.width} / ${vp1.height}`;\n      el.innerHTML = `<canvas></canvas><div class=\"layer\"></div><div class=\"pnum\">Page ${i} of ${doc.numPages}</div>`;\n      container.appendChild(el);\n      els.push({ el, page, vp1 });\n    }\n    // draw canvases after layout so widths are known\n    for (let i = 0; i < els.length; i++) {\n      const { el, page, vp1 } = els[i];\n      const cssW = el.clientWidth || 800;\n      const scale = Math.min(2.5, (cssW * Math.min(2, window.devicePixelRatio || 1)) / vp1.width);\n      const vp = page.getViewport({ scale });\n      const canvas = el.querySelector('canvas');\n      canvas.width = Math.floor(vp.width);\n      canvas.height = Math.floor(vp.height);\n      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;\n      if (onPage) onPage(i + 1, el, el.querySelector('.layer'), sizes[i]);\n    }\n    return { numPages: doc.numPages, sizes };\n  };\n\n  PS.initialsOf = (name) => String(name || '').trim().split(/\\s+/).filter(Boolean).map((p) => p[0].toUpperCase()).join('').slice(0, 4);\n\n  // Stable text fingerprint of a form: distinct long alpha tokens from the first pages, sorted.\n  // Filled-in names/addresses are a small fraction, so two copies of the same blank form overlap heavily.\n  PS.fingerprintFromText = function (text) {\n    const toks = String(text || '').toLowerCase().replace(/[^a-z]+/g, ' ').split(' ').filter((w) => w.length >= 4);\n    return [...new Set(toks)].sort().slice(0, 200).join(' ');\n  };\n\n  // Pull page count, per-page sizes, and a fingerprint from a PDF url using pdf.js (already loaded).\n  PS.inspectPdf = async function (url, textPages = 2) {\n    const pdfjsLib = window.pdfjsLib;\n    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';\n    const doc = await pdfjsLib.getDocument({ url, withCredentials: true }).promise;\n    const sizes = [];\n    let text = '';\n    for (let i = 1; i <= doc.numPages; i++) {\n      const page = await doc.getPage(i);\n      const vp = page.getViewport({ scale: 1 });\n      sizes.push({ w: vp.width, h: vp.height });\n      if (i <= textPages) {\n        try { const tc = await page.getTextContent(); text += ' ' + tc.items.map((it) => it.str).join(' '); } catch (e) {}\n      }\n    }\n    return { pageCount: doc.numPages, sizes, text: text.trim(), fingerprint: PS.fingerprintFromText(text), hasText: text.trim().length > 40 };\n  };\n\n  PS.ROLE_OPTIONS = [\n    { v: '', t: 'No role' }, { v: 'seller', t: 'Seller' }, { v: 'buyer', t: 'Buyer' },\n    { v: 'tenant', t: 'Tenant' }, { v: 'landlord', t: 'Landlord' }, { v: 'agent', t: 'Agent' },\n    { v: 'broker', t: 'Broker' }, { v: 'other', t: 'Other' },\n  ];\n})();\n" }, "/app.css": { "ct": "text/css; charset=utf-8", "body": ":root {\n  --navy: #13203b;\n  --navy-2: #1d2d50;\n  --gold: #b8945a;\n  --gold-2: #d4b47c;\n  --ink: #1b2233;\n  --muted: #6b7180;\n  --line: #e4e1da;\n  --paper: #f6f4ef;\n  --white: #ffffff;\n  --ok: #3f7d55;\n  --warn: #b7791f;\n  --bad: #a3404f;\n  --radius: 6px;\n  --shadow: 0 1px 2px rgba(19,32,59,.06), 0 8px 24px rgba(19,32,59,.08);\n}\n* { box-sizing: border-box; }\nhtml, body { margin: 0; padding: 0; }\nbody {\n  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;\n  color: var(--ink); background: var(--paper); font-size: 14px; line-height: 1.5;\n  -webkit-font-smoothing: antialiased;\n}\nh1, h2, h3, .serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; color: var(--navy); }\nh1 { font-size: 34px; margin: 0 0 4px; letter-spacing: .2px; }\nh2 { font-size: 24px; margin: 0 0 12px; }\nh3 { font-size: 19px; margin: 0 0 8px; }\na { color: var(--navy); }\nbutton, input, select, textarea { font: inherit; color: inherit; }\n.hidden { display: none !important; }\n\n/* top bar */\n.topbar {\n  position: sticky; top: 0; z-index: 50; background: var(--navy); color: #fff;\n  display: flex; align-items: center; gap: 16px; padding: 0 20px; height: 60px;\n  border-bottom: 2px solid var(--gold);\n}\n.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; white-space: nowrap; }\n.brand .mark { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 600; letter-spacing: .5px; }\n.brand .sub { font-size: 10px; letter-spacing: 3px; color: var(--gold-2); text-transform: uppercase; }\n.topbar .spacer { flex: 1; }\n.topbar .doc-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 19px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }\n\n/* buttons */\n.btn {\n  display: inline-flex; align-items: center; justify-content: center; gap: 8px;\n  border: 1px solid var(--line); background: var(--white); color: var(--navy);\n  padding: 9px 16px; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 13px;\n  text-decoration: none; white-space: nowrap; transition: background .15s, border-color .15s, transform .05s;\n}\n.btn:hover { border-color: var(--navy); }\n.btn:active { transform: translateY(1px); }\n.btn:disabled { opacity: .5; cursor: not-allowed; }\n.btn.primary { background: var(--navy); border-color: var(--navy); color: #fff; }\n.btn.primary:hover { background: var(--navy-2); }\n.btn.gold { background: var(--gold); border-color: var(--gold); color: #fff; }\n.btn.gold:hover { background: #a7834b; }\n.btn.ghost { background: transparent; border-color: rgba(255,255,255,.35); color: #fff; }\n.btn.ghost:hover { border-color: #fff; }\n.btn.danger { color: var(--bad); }\n.btn.danger:hover { border-color: var(--bad); }\n.btn.sm { padding: 6px 10px; font-size: 12px; }\n.btn.link { border: none; background: none; padding: 4px 6px; color: var(--navy); text-decoration: underline; }\n\n/* layout */\n.wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px 80px; }\n.card { background: var(--white); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }\n.pad { padding: 24px; }\n.eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; }\n.muted { color: var(--muted); }\n.row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }\n.field-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin: 0 0 6px; letter-spacing: .3px; }\n.input, select.input, textarea.input {\n  width: 100%; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; background: #fff;\n  outline: none; transition: border-color .15s, box-shadow .15s;\n}\n.input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,148,90,.18); }\ntextarea.input { resize: vertical; min-height: 70px; }\n\n/* status pills */\n.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; letter-spacing: .3px; text-transform: uppercase; }\n.pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }\n.pill.draft { background: #eef0f4; color: #5b6272; }\n.pill.sent { background: #fdf3e2; color: var(--warn); }\n.pill.completed { background: #e6f2ea; color: var(--ok); }\n.pill.voided, .pill.declined { background: #f8e8eb; color: var(--bad); }\n.pill.viewed { background: #e8eefa; color: #3e5f9e; }\n.pill.pending { background: #eef0f4; color: #5b6272; }\n\n/* modal */\n.modal-back { position: fixed; inset: 0; background: rgba(19,32,59,.55); z-index: 200; display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px; overflow: auto; }\n.modal { background: #fff; border-radius: 10px; width: 100%; max-width: 620px; box-shadow: 0 20px 60px rgba(0,0,0,.25); border-top: 4px solid var(--gold); }\n.modal header { padding: 22px 26px 6px; }\n.modal .body { padding: 8px 26px 20px; }\n.modal footer { padding: 14px 26px 22px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }\n\n/* toast */\n#toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 11px 18px; border-radius: 6px; z-index: 400; font-size: 13px; box-shadow: var(--shadow); border-left: 3px solid var(--gold); opacity: 0; pointer-events: none; transition: opacity .2s; max-width: 90vw; }\n#toast.show { opacity: 1; }\n#toast.err { border-left-color: #e57a8a; }\n\n/* pdf pages */\n.pages { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px 12px 120px; }\n.page { position: relative; width: 100%; max-width: 860px; background: #fff; box-shadow: 0 2px 10px rgba(19,32,59,.15); }\n.page canvas { display: block; width: 100%; height: auto; }\n.page .layer { position: absolute; inset: 0; }\n.page .pnum { position: absolute; right: -2px; bottom: -20px; font-size: 11px; color: var(--muted); }\n\n/* placed fields */\n.f {\n  position: absolute; border: 1.5px solid var(--c, var(--gold)); border-radius: 3px;\n  background: color-mix(in srgb, var(--c, var(--gold)) 22%, transparent);\n  display: flex; align-items: center; justify-content: center; overflow: hidden;\n  font-size: 11px; font-weight: 600; color: var(--navy); user-select: none; -webkit-user-select: none;\n  touch-action: none; line-height: 1.1; text-align: center;\n}\n.f .flabel { pointer-events: none; padding: 0 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }\n.f img { max-width: 100%; max-height: 100%; pointer-events: none; }\n.f .fval { pointer-events: none; font-weight: 500; font-size: clamp(8px, 1.4vw, 13px); color: #142357; white-space: nowrap; overflow: hidden; padding: 0 3px; width: 100%; text-align: left; }\n.f .req { position: absolute; top: 0; right: 2px; color: var(--bad); font-size: 12px; }\n\n.brand .brandlogo { width: 34px; height: 34px; border-radius: 8px; display: block; box-shadow: 0 0 0 1px rgba(201,164,92,.45); }\n" } };
 function __serveAsset(p) {
   if (p === "/") p = "/index.html";
   else if (p === "/sign") p = "/sign.html";
@@ -20741,6 +20853,15 @@ var INK = rgb(0.06, 0.09, 0.2);
 var MAX_PDF_BYTES = 25 * 1024 * 1024;
 var MAX_IMG_CHARS = 4e5;
 var FIELD_TYPES = ["signature", "initials", "date", "name", "text", "checkbox", "email"];
+var ROLES = ["seller", "buyer", "tenant", "landlord", "agent", "broker", "other"];
+function cleanRole(r) {
+  r = String(r || "").toLowerCase().trim();
+  return ROLES.includes(r) ? r : "";
+}
+function cleanSlot(s) {
+  s = Math.round(Number(s) || 1);
+  return s < 1 ? 1 : s > 9 ? 9 : s;
+}
 var entry_default = {
   async fetch(request, env, ctx) {
     try {
@@ -20784,7 +20905,16 @@ async function route(request, env, ctx) {
   if (!await isAuthed(request, env)) throw new HttpError(401, "Please sign in.");
   if (p === "/api/envelopes" && m === "GET") return listEnvelopes(env);
   if (p === "/api/envelopes" && m === "POST") return createEnvelope(request, env);
-  if (mm = p.match(/^\/api\/envelopes\/([a-f0-9]{16,})(\/[a-z]+)?$/)) {
+  if (p === "/api/templates" && m === "GET") return listTemplates(env);
+  if (p === "/api/templates" && m === "POST") return createTemplate(request, env);
+  if (p === "/api/templates/match" && m === "POST") return matchTemplates(request, env);
+  if (mm = p.match(/^\/api\/templates\/([a-f0-9]{16,})$/)) {
+    const id = mm[1];
+    if (m === "GET") return getTemplate(env, id);
+    if (m === "DELETE") return deleteTemplate(env, id);
+    if (m === "PUT") return updateTemplate(request, env, id);
+  }
+  if (mm = p.match(/^\/api\/envelopes\/([a-f0-9]{16,})(\/[a-z-]+)?$/)) {
     const id = mm[1];
     const sub = mm[2] || "";
     if (sub === "" && m === "GET") return getEnvelope(request, env, id);
@@ -20796,6 +20926,7 @@ async function route(request, env, ctx) {
     if (sub === "/void" && m === "POST") return voidEnvelope(request, env, id);
     if (sub === "/remind" && m === "POST") return remindEnvelope(request, env, id);
     if (sub === "/duplicate" && m === "POST") return duplicateEnvelope(env, id);
+    if (sub === "/apply-template" && m === "POST") return applyTemplate(request, env, id);
   }
   throw new HttpError(404, "Not found");
 }
@@ -20907,6 +21038,8 @@ function publicRecipient(r, origin, includeToken) {
     color: r.color,
     sign_order: r.sign_order,
     status: r.status,
+    role: r.role || "",
+    slot: r.slot || 1,
     viewed_at: r.viewed_at,
     signed_at: r.signed_at,
     consent_at: r.consent_at,
@@ -20978,14 +21111,14 @@ async function saveEnvelope(request, env, id) {
     const rid = /^[a-f0-9]{16,}$/.test(r.id || "") ? r.id : randHex(10);
     idMap[r.id || r.key || String(i3)] = rid;
     if (r.key) idMap[r.key] = rid;
-    stmts.push(env.DB.prepare("INSERT INTO recipients (id, envelope_id, name, email, color, sign_order) VALUES (?,?,?,?,?,?)").bind(rid, id, cleanStr(r.name, 120) || `Signer ${i3 + 1}`, cleanStr(r.email, 200).toLowerCase(), cleanStr(r.color, 20) || "#C9A45C", Number(r.sign_order) || i3 + 1));
+    stmts.push(env.DB.prepare("INSERT INTO recipients (id, envelope_id, name, email, color, sign_order, role, slot) VALUES (?,?,?,?,?,?,?,?)").bind(rid, id, cleanStr(r.name, 120) || `Signer ${i3 + 1}`, cleanStr(r.email, 200).toLowerCase(), cleanStr(r.color, 20) || "#C9A45C", Number(r.sign_order) || i3 + 1, cleanRole(r.role), cleanSlot(r.slot)));
   });
   for (const f of fieldsIn) {
     const rid = idMap[f.recipient_id] || idMap[f.recipient_key];
     if (!rid || !FIELD_TYPES.includes(f.type)) continue;
     const page = Math.max(1, Math.min(e.page_count || 9999, Number(f.page) || 1));
     const clamp = (v) => Math.max(0, Math.min(1, Number(v) || 0));
-    stmts.push(env.DB.prepare("INSERT INTO fields (id, envelope_id, recipient_id, type, page, x, y, w, h, required, label) VALUES (?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), id, rid, f.type, page, clamp(f.x), clamp(f.y), clamp(f.w), clamp(f.h), f.required === false || f.required === 0 ? 0 : 1, cleanStr(f.label, 120)));
+    stmts.push(env.DB.prepare("INSERT INTO fields (id, envelope_id, recipient_id, type, page, x, y, w, h, required, label, source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), id, rid, f.type, page, clamp(f.x), clamp(f.y), clamp(f.w), clamp(f.h), f.required === false || f.required === 0 ? 0 : 1, cleanStr(f.label, 120), cleanStr(f.source, 60)));
   }
   await env.DB.batch(stmts);
   return getEnvelope(request, env, id);
@@ -21014,10 +21147,10 @@ async function duplicateEnvelope(env, id) {
   const map = {};
   for (const r of recipients) {
     map[r.id] = randHex(10);
-    stmts.push(env.DB.prepare("INSERT INTO recipients (id, envelope_id, name, email, color, sign_order) VALUES (?,?,?,?,?,?)").bind(map[r.id], nid, r.name, r.email, r.color, r.sign_order));
+    stmts.push(env.DB.prepare("INSERT INTO recipients (id, envelope_id, name, email, color, sign_order, role, slot) VALUES (?,?,?,?,?,?,?,?)").bind(map[r.id], nid, r.name, r.email, r.color, r.sign_order, r.role || "", r.slot || 1));
   }
   for (const f of fields) {
-    stmts.push(env.DB.prepare("INSERT INTO fields (id, envelope_id, recipient_id, type, page, x, y, w, h, required, label) VALUES (?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), nid, map[f.recipient_id], f.type, f.page, f.x, f.y, f.w, f.h, f.required, f.label));
+    stmts.push(env.DB.prepare("INSERT INTO fields (id, envelope_id, recipient_id, type, page, x, y, w, h, required, label, source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), nid, map[f.recipient_id], f.type, f.page, f.x, f.y, f.w, f.h, f.required, f.label, f.source || ""));
   }
   await env.DB.batch(stmts);
   await logEvent(env, nid, null, "created", `Envelope duplicated from ${e.title}`);
@@ -21424,6 +21557,166 @@ async function addCertificate(env, pdf, data, fonts) {
     page.drawText(l, { x: M, y, size: 8.5, font: helv, color: INK });
     y -= 12;
   }
+}
+function slotKey(role, slot) {
+  return (role || "other") + "#" + (slot || 1);
+}
+function recipientSlotMap(recipients) {
+  const used = /* @__PURE__ */ new Set();
+  const map = {};
+  for (const r of recipients) {
+    let role = r.role || "other";
+    let slot = r.slot || 1;
+    while (used.has(slotKey(role, slot))) slot += 1;
+    used.add(slotKey(role, slot));
+    map[slotKey(role, slot)] = r;
+    r._slotKey = slotKey(role, slot);
+  }
+  return map;
+}
+async function listTemplates(env) {
+  const rows = (await env.DB.prepare("SELECT id, name, version, page_count, fingerprint, updated_at FROM templates ORDER BY name, updated_at DESC").all()).results;
+  const counts = (await env.DB.prepare("SELECT template_id, COUNT(*) n FROM template_fields GROUP BY template_id").all()).results;
+  const cby = Object.fromEntries(counts.map((c) => [c.template_id, c.n]));
+  rows.forEach((t) => t.field_count = cby[t.id] || 0);
+  return json({ templates: rows });
+}
+async function getTemplate(env, id) {
+  const t = await env.DB.prepare("SELECT * FROM templates WHERE id = ?").bind(id).first();
+  if (!t) throw new HttpError(404, "Template not found.");
+  t.fields = (await env.DB.prepare("SELECT id, type, page, x, y, w, h, required, role, slot, label FROM template_fields WHERE template_id = ? ORDER BY page, y, x").bind(id).all()).results;
+  return json({ template: t });
+}
+async function createTemplate(request, env) {
+  const body = await request.json();
+  const envId = String(body.envelope_id || "");
+  const { e, recipients, fields } = await loadEnvelope(env, envId);
+  if (!fields.length) throw new HttpError(400, "Place at least one field before saving a template.");
+  const name = cleanStr(body.name, 160) || e.title || "Untitled form";
+  const version = cleanStr(body.version, 60);
+  const fingerprint = cleanStr(body.fingerprint, 2e3);
+  const anchors = cleanStr(typeof body.anchors === "string" ? body.anchors : JSON.stringify(body.anchors || []), 6e3);
+  const pageW = Number(body.page_w) || 0, pageH = Number(body.page_h) || 0;
+  recipientSlotMap(recipients);
+  const recById = Object.fromEntries(recipients.map((r) => [r.id, r]));
+  const tid = randHex(12);
+  const stmts = [env.DB.prepare("INSERT INTO templates (id, name, version, page_count, page_w, page_h, fingerprint, anchors, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)").bind(tid, name, version, e.page_count || 0, pageW, pageH, fingerprint, anchors, nowIso(), nowIso())];
+  for (const f of fields) {
+    const r = recById[f.recipient_id];
+    const [role, slot] = (r && r._slotKey ? r._slotKey : "other#1").split("#");
+    stmts.push(env.DB.prepare("INSERT INTO template_fields (id, template_id, type, page, x, y, w, h, required, role, slot, label) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), tid, f.type, f.page, f.x, f.y, f.w, f.h, f.required, role === "other" && !(r && r.role) ? "" : role, Number(slot) || 1, f.label || ""));
+  }
+  await env.DB.batch(stmts);
+  return json({ id: tid, name, fields: fields.length });
+}
+async function updateTemplate(request, env, id) {
+  const t = await env.DB.prepare("SELECT id FROM templates WHERE id = ?").bind(id).first();
+  if (!t) throw new HttpError(404, "Template not found.");
+  const body = await request.json();
+  const name = cleanStr(body.name, 160);
+  const version = cleanStr(body.version, 60);
+  await env.DB.prepare("UPDATE templates SET name = COALESCE(NULLIF(?,''), name), version = ?, updated_at = ? WHERE id = ?").bind(name, version, nowIso(), id).run();
+  return getTemplate(env, id);
+}
+async function deleteTemplate(env, id) {
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM template_fields WHERE template_id = ?").bind(id),
+    env.DB.prepare("DELETE FROM templates WHERE id = ?").bind(id)
+  ]);
+  return json({ ok: true });
+}
+function fpTokens(s) {
+  return new Set(String(s || "").split(" ").filter(Boolean));
+}
+function jaccard(a, b) {
+  if (!a.size || !b.size) return 0;
+  let inter = 0;
+  for (const t of a) if (b.has(t)) inter++;
+  return inter / (a.size + b.size - inter);
+}
+async function matchTemplates(request, env) {
+  const body = await request.json();
+  const docTokens = fpTokens(cleanStr(body.fingerprint, 2e3));
+  const pageCount = Number(body.page_count) || 0;
+  const aspect = Number(body.page_w) && Number(body.page_h) ? Number(body.page_w) / Number(body.page_h) : 0;
+  const rows = (await env.DB.prepare("SELECT id, name, version, page_count, page_w, page_h, fingerprint FROM templates").all()).results;
+  const scored = rows.map((t) => {
+    const sim = jaccard(docTokens, fpTokens(t.fingerprint));
+    let score = Math.round(sim * 100);
+    const reasons = [];
+    if (sim >= 0.72) reasons.push("form text matches");
+    else if (sim >= 0.45) reasons.push("similar form, confirm it is the right one");
+    if (pageCount && t.page_count) {
+      if (pageCount === t.page_count) score += 6;
+      else {
+        score -= 25;
+        reasons.push("different page count");
+      }
+    }
+    const tAspect = t.page_w && t.page_h ? t.page_w / t.page_h : 0;
+    if (aspect && tAspect && Math.abs(aspect - tAspect) > 0.08) {
+      score -= 10;
+      reasons.push("different page size");
+    }
+    const exact = sim >= 0.72 && (!pageCount || !t.page_count || pageCount === t.page_count);
+    return { id: t.id, name: t.name, version: t.version, page_count: t.page_count, similarity: Math.round(sim * 100), score, reasons, exact };
+  }).sort((a, b) => b.score - a.score);
+  return json({ matches: scored, best: scored.find((s) => s.exact) || null });
+}
+async function applyTemplate(request, env, id) {
+  const { e, recipients } = await loadEnvelope(env, id);
+  if (e.status !== "draft") throw new HttpError(409, "This envelope has already been sent and can no longer be edited.");
+  const body = await request.json().catch(() => ({}));
+  if (body.clear) {
+    await env.DB.prepare("DELETE FROM fields WHERE envelope_id = ? AND source LIKE 'template:%'").bind(id).run();
+    await logEvent(env, id, null, "template", "Removed auto-placed fields");
+    return getEnvelope(request, env, id);
+  }
+  const tid = String(body.template_id || "");
+  const t = await env.DB.prepare("SELECT * FROM templates WHERE id = ?").bind(tid).first();
+  if (!t) throw new HttpError(404, "Template not found.");
+  const tFields = (await env.DB.prepare("SELECT * FROM template_fields WHERE template_id = ?").bind(tid).all()).results;
+  const slotMap = recipientSlotMap(recipients);
+  const clamp = (v) => Math.max(0, Math.min(1, Number(v) || 0));
+  const warnings = [];
+  const unfilled = /* @__PURE__ */ new Set();
+  const usedRecipients = /* @__PURE__ */ new Set();
+  const inserts = [];
+  for (const tf of tFields) {
+    const key = slotKey(tf.role, tf.slot);
+    const r = slotMap[key];
+    if (!r) {
+      unfilled.add(key);
+      continue;
+    }
+    usedRecipients.add(r.id);
+    const page = Math.max(1, Math.min(e.page_count || 9999, tf.page));
+    inserts.push(env.DB.prepare("INSERT INTO fields (id, envelope_id, recipient_id, type, page, x, y, w, h, required, label, source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)").bind(randHex(10), id, r.id, tf.type, page, clamp(tf.x), clamp(tf.y), clamp(tf.w), clamp(tf.h), tf.required ? 1 : 0, tf.label || "", "template:" + tid));
+  }
+  for (const r of recipients) {
+    if (!usedRecipients.has(r.id)) warnings.push(`No fields in this template for ${r.name || "a signer"} (${roleLabel(r.role)} ${r.slot || 1}). Add them manually or adjust the signer's role/slot.`);
+  }
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM fields WHERE envelope_id = ? AND source LIKE 'template:%'").bind(id),
+    ...inserts
+  ]);
+  await logEvent(env, id, null, "template", `Applied template "${t.name}" (${inserts.length} fields)`);
+  const payload = await getEnvelope(request, env, id);
+  const data = await payload.json();
+  data.apply = {
+    template: t.name,
+    placed: inserts.length,
+    warnings,
+    unfilled_slots: [...unfilled].map((k) => {
+      const [role, slot] = k.split("#");
+      return `${roleLabel(role)} ${slot}`;
+    })
+  };
+  return json(data);
+}
+function roleLabel(role) {
+  const m = { seller: "Seller", buyer: "Buyer", tenant: "Tenant", landlord: "Landlord", agent: "Agent", broker: "Broker", other: "Signer", "": "Signer" };
+  return m[role || ""] || "Signer";
 }
 function emailEnabled(env) {
   return !!(env.RESEND_API_KEY && env.MAIL_FROM);
