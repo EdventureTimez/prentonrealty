@@ -100,7 +100,12 @@
     {"@type": "Person", "name": "Edward Sanchez", "jobTitle": "Co-Founder & Commercial Broker", "worksFor": {"@id": "https://prentonrealty.com/#organization"}},
     {"@type": "Person", "name": "Gabriela Bertand", "jobTitle": "Residential Broker"},
     {"@type": "Person", "name": "Candice Bailey", "jobTitle": "Residential Broker"},
-    {"@type": "Person", "name": "Joseph Santoro", "jobTitle": "Broker Associate"}
+    {"@type": "Person", "name": "Joseph Santoro", "jobTitle": "Broker Associate"},
+    {"@type": "Person", "name": "Isabela Sanchez", "jobTitle": "Office Manager"},
+    {"@type": "Person", "name": "Phillip Sanchez", "jobTitle": "Office Co-Manager"},
+    {"@type": "Person", "name": "Basia Sawicka", "jobTitle": "Leads Specialist"},
+    {"@type": "Person", "name": "Steven Greene", "jobTitle": "IT Specialist"},
+    {"@type": "Person", "name": "Claire Stephens", "jobTitle": "Media Specialist"}
   ],
   "sameAs": [
     "https://luxurycabos.com",
@@ -461,6 +466,14 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(16px);-webkit-ba
 .team-contact-info a:hover{color:var(--gold)}
 .team-card-sm p{font-size:.8rem;line-height:1.6}
 .team-card-sm h3{font-size:1.1rem}
+.team-staff-intro{max-width:620px;margin:-1rem auto 2rem;text-align:center;font-size:.85rem;line-height:1.7}
+.team-staff{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;max-width:1100px;margin:0 auto;padding:0 0 5rem}
+.staff-card{flex:0 1 204px;min-width:150px;text-align:center;padding:1.4rem .8rem 1.2rem;border:1px solid var(--light-border);border-top:2px solid var(--gold);background:rgba(255,255,255,.45)}
+.staff-card h4{font-family:var(--serif);font-size:1.05rem;font-weight:400;margin-bottom:.35rem}
+.staff-card .team-title{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);margin-bottom:.7rem}
+.staff-card a{font-size:.74rem;line-height:1.5;display:inline-block;color:var(--light-sub);transition:color .3s}
+.staff-card a:hover{color:var(--copper)}
+@media(max-width:700px){.staff-card{flex:1 1 150px;max-width:calc(50% - .5rem)}}
 @media(max-width:900px){.team-grid-agents{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.team-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}.team-grid-agents{grid-template-columns:repeat(2,1fr)}}
 
@@ -1679,7 +1692,7 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
       <h3>Our Agents &amp; Associates</h3>
     </div>
 
-    <div class="team-grid-agents">
+    <div class="team-grid-agents" style="padding-bottom:3.5rem">
       <div class="team-card team-card-sm rv d2">
         <div class="team-photo" style="height:220px;background:url('photos/Gabriela Bertand — professional headshot.png') center/cover"></div>
         <h3>Gabriela Bertand</h3>
@@ -1712,6 +1725,39 @@ footer{background:var(--bg2);border-top:1px solid var(--t05);padding:4rem 0 2rem
           <a href="mailto:Joseph@PrentonRealty.com">Joseph@PrentonRealty.com</a>
           <span style="font-size:.68rem;color:var(--t40)">License #475118861</span>
         </div>
+      </div>
+    </div>
+
+    <div class="team-section-label rv">
+      <h3>Office Staff</h3>
+    </div>
+    <p class="team-staff-intro rv">The team behind the scenes. Our office staff keep operations, technology, and media running, and route every inquiry to a licensed Prenton broker.</p>
+
+    <div class="team-staff">
+      <div class="staff-card rv">
+        <h4>Isabela &ldquo;Bella&rdquo; Sanchez</h4>
+        <div class="team-title">Office Manager</div>
+        <a href="mailto:Isabela@PrentonRealty.com">Isabela@<wbr>PrentonRealty.com</a>
+      </div>
+      <div class="staff-card rv">
+        <h4>Phillip Sanchez</h4>
+        <div class="team-title">Office Co-Manager</div>
+        <a href="mailto:Phillip@PrentonRealty.com">Phillip@<wbr>PrentonRealty.com</a>
+      </div>
+      <div class="staff-card rv">
+        <h4>Basia Sawicka</h4>
+        <div class="team-title">Leads Specialist</div>
+        <a href="mailto:Basia@PrentonRealty.com">Basia@<wbr>PrentonRealty.com</a>
+      </div>
+      <div class="staff-card rv">
+        <h4>Steven Greene</h4>
+        <div class="team-title">IT Specialist</div>
+        <a href="mailto:Steven@PrentonRealty.com">Steven@<wbr>PrentonRealty.com</a>
+      </div>
+      <div class="staff-card rv">
+        <h4>Claire Stephens</h4>
+        <div class="team-title">Media Specialist</div>
+        <a href="mailto:Claire@PrentonRealty.com">Claire@<wbr>PrentonRealty.com</a>
       </div>
     </div>
   </div>
